@@ -48,8 +48,8 @@ int main(int argc, const char * argv[]) {
     // to be vectorizable.
     double** A = function::genTridiagMatVectArgsExact(N, a, b, c);
     
-    delete [] a;
-    delete [] b;
+    //delete [] a;
+    //delete [] b;
     delete [] c;
     
     // Implement the Jacobi Method
@@ -71,5 +71,20 @@ int main(int argc, const char * argv[]) {
         function::jacobiRotation(A, N, *p, *q, theta);
     }
 
+    function::printMatrix(A, N, N);
+    //make identity matrix for tqli
+    double* ones = function::generateConstantVector(N, 1);
+    double* zeros = function::generateConstantVector(N-1, 0);
+    double** z  = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+
+    tqli(b,a,N,z); //householder method
+
+    function::printDiagonals(A,N);
+    function::printVector(b,N);
+
+
+
+    delete [] a;
+    delete [] b;
     return 0;
 }
