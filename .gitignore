@@ -1,6 +1,6 @@
 # Xcode Files
 *.xcodeproj
-*.xcodeproj/*
+#*.xcodeproj/*
 
 # QT project files
 *.pro
@@ -11,4 +11,3 @@
 *.gz
 
 # Ignore the QT subfolders
-project2/*/
