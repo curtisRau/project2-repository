@@ -8,3 +8,6 @@
 # Useless LaTeX files
 *.log
 *.gz
+
+# Ignore the QT subfolders
+project2/*/
