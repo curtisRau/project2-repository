@@ -11,4 +11,3 @@
 *.gz
 
 # Ignore the QT subfolders
-project2/*/
