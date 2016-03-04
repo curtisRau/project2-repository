@@ -1,15 +1,14 @@
 //
-//  main.cpp
+//  functions.hpp
 //  project2
 //
 //  Created by Curtis Rau on 3/4/16.
 //  Copyright © 2016 Curtis Rau. All rights reserved.
 //
 
-#include <iostream>
+#ifndef functions_hpp
+#define functions_hpp
 
-int main(int argc, const char * argv[]) {
+#include <stdio.h>
 
-    
-    return 0;
-}
+#endif /* functions_hpp */
