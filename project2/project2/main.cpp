@@ -57,17 +57,23 @@ int main(int argc, const char * argv[]) {
     unsigned int y;
     unsigned int* p = &x;
     unsigned int* q = &y;
-    double theta = 0.0;
+    double theta;
     unsigned int maxRecursion = 100;        // Maximum number of times for loop will run.
-    double minTheta = 0.0000001;
+    double z;
+    double* maxValue = &z;
+    double tolerance;
+    unsigned int numberOfItterations = 0;
     
-    for (unsigned int i = 0; (i < maxRecursion) || (theta > minTheta); i++) {
-        function::indiciesOfMaxOffDiagnalElement(A, N, N, p, q);
+    function::maxOffDiagnalElement(A, N, maxValue, p, q);
+    for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+        function::maxOffDiagnalElement(A, N, maxValue, p, q);
         theta = atan(
                      (2*A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                      ) / 2.0;
         function::jacobiRotation(A, N, *p, *q, theta);
     }
+    
+    std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
 
     return 0;
 }

@@ -24,5 +24,6 @@ namespace function {
     double frobeniusNorm (double** A, unsigned int m, unsigned int n);
     void jacobiRotation (double** A, unsigned int matrixSize, unsigned int i, unsigned int j, float theta);
     double off (double** A, unsigned int matrixSize);
-    void indiciesOfMaxOffDiagnalElement (double** A, unsigned int m, unsigned int n, unsigned int* p, unsigned int* q);
+    void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q);
+    double minDiagonalElement (double** A, unsigned int matrixSize);
 }
