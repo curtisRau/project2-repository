@@ -28,6 +28,15 @@ namespace function {
         for (unsigned int i = 0; i<n; i++) {
             std::cout << d[i] << " ";
         }
+        std::cout << "\n";
+    }
+
+    // A function to print a diagonals of matrix A
+    void printDiagonals (double** A, unsigned int n) {
+        for (unsigned int i = 0; i<n; i++) {
+            std::cout << A[i][i] << " ";
+        }
+        std::cout << "\n";
     }
     
     // Generate a Constant Vector of length "length", initialized
