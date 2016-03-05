@@ -27,7 +27,7 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N    = 100;
+    unsigned int N    = 10;
     //double       rho0 = 0.00000000000000001;        // The starting position, probably 0.0, but 1/0 encountered.
     double       h    = 1;                  // The step length
     double       h2   = h*h;                // Step Length Squared;
@@ -39,11 +39,11 @@ int main(int argc, const char * argv[]) {
     double* a = function::generateConstantVector(N-1, -1/h2);
     double* c = function::generateConstantVector(N-1, -1/h2);
     double* b = new double[N];
-    b[0]=0;
+    b[0]=2/h2;
     for (int i = 1; i < N; i++) {
-        b[i] = 1/h2 + V(i*h);
+        b[i] = 2/h2 + V(i*h);
     }
-    
+    function::printVector(b,N);
     // Passing vector arguments instead of making calls to the functions
     // that generate the vector arguments allows the following function
     // to be vectorizable.
@@ -60,16 +60,18 @@ int main(int argc, const char * argv[]) {
     unsigned int y;
     unsigned int* p = &x;
     unsigned int* q = &y;
-    double theta = 0.0;
+    double theta = 100;
     unsigned int maxRecursion = 100;        // Maximum number of times for loop will run.
-    double minTheta = 0.000000001;
+    double minTheta = .000000000000000000000000000000000000000001;
 
-    for (unsigned int i = 0; (i < maxRecursion) || (theta > minTheta); i++) {
+    for (unsigned int i = 0; ( theta*theta > minTheta); i++) {
         function::indiciesOfMaxOffDiagnalElement(A, N, N, p, q);
         theta = atan(
                      (2*A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                      ) / 2.0;
         function::jacobiRotation(A, N, *p, *q, theta);
+        std::cout<<theta<<endl;
+        //function::printMatrix(A, N, N);
     }
 
     function::printMatrix(A, N, N);
