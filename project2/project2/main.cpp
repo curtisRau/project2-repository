@@ -10,7 +10,7 @@
 #include "functions.hpp"
 #include <math.h>           // for atan
 #include "time.h"
-//#include "lib.h"
+//#include "lib.hpp"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,7 +83,7 @@ int main(int argc, const char * argv[]) {
     double* zeros = function::generateConstantVector(N-1, 0);
     double** I  = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
 
-    tqli(b,a,N,I); //householder method
+    //tqli(b,a,N,I); //householder method
 
     function::printDiagonals(A,N);
     function::printVector(b,N);

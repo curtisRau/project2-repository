@@ -196,7 +196,7 @@ double ran3(long *idum)
     ** can be substituted for the present values. 
     */
 
-#include "lib.h"
+#include "lib.hpp"
 
 
     /*
