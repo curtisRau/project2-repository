@@ -27,8 +27,8 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N    = 10;
-    double       rho0 = 0.000000001;        // The starting position, probably 0.0, but 1/0 encountered.
+    unsigned int N    = 100;
+    //double       rho0 = 0.00000000000000001;        // The starting position, probably 0.0, but 1/0 encountered.
     double       h    = 1;                  // The step length
     double       h2   = h*h;                // Step Length Squared;
     
@@ -39,8 +39,9 @@ int main(int argc, const char * argv[]) {
     double* a = function::generateConstantVector(N-1, -1/h2);
     double* c = function::generateConstantVector(N-1, -1/h2);
     double* b = new double[N];
-    for (int i = 0; i < N; i++) {
-        b[i] = 1/h2 + V(rho0 + i*h);
+    b[0]=0;
+    for (int i = 1; i < N; i++) {
+        b[i] = 1/h2 + V(i*h);
     }
     
     // Passing vector arguments instead of making calls to the functions
@@ -61,8 +62,8 @@ int main(int argc, const char * argv[]) {
     unsigned int* q = &y;
     double theta = 0.0;
     unsigned int maxRecursion = 100;        // Maximum number of times for loop will run.
-    double minTheta = 0.0000001;
-    
+    double minTheta = 0.000000001;
+
     for (unsigned int i = 0; (i < maxRecursion) || (theta > minTheta); i++) {
         function::indiciesOfMaxOffDiagnalElement(A, N, N, p, q);
         theta = atan(
