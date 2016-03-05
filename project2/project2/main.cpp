@@ -10,7 +10,7 @@
 #include "functions.hpp"
 #include <math.h>           // for atan
 #include "time.h"
-#include "lib.h"
+//#include "lib.hpp"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,15 +22,21 @@ double V (double rho) {
     return rho * rho;           // + beta / rho;
 }
 
+// Convert the eigenvalue to energy
+double eigenvalue2Energy () {
+    return 0.0;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N    = 100;
-    //double       rho0 = 0.00000000000000001;        // The starting position, probably 0.0, but 1/0 encountered.
-    double       h    = 1;                  // The step length
-    double       h2   = h*h;                // Step Length Squared;
+    unsigned int N      = 10;                       // The number of ??? should this be N-2 or something?
+    double       rhoMin = 0.0;                      // The starting position.
+    double       rhoMax = 200;
+    double       h      = (rhoMax - rhoMin) / N;    // The step length
+    double       h2     = h*h;                      // Step Length Squared;
     
     // Generate the A matrix which the Jacobi Method will diagonalize
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,10 +45,13 @@ int main(int argc, const char * argv[]) {
     double* a = function::generateConstantVector(N-1, -1/h2);
     double* c = function::generateConstantVector(N-1, -1/h2);
     double* b = new double[N];
+
     b[0]=0;
     for (int i = 1; i < N; i++) {
-        b[i] = 1/h2 + V(i*h);
+        b[i] = 2/h2 + V(rhoMin + i*h);
     }
+
+
     
     // Passing vector arguments instead of making calls to the functions
     // that generate the vector arguments allows the following function
@@ -60,30 +69,41 @@ int main(int argc, const char * argv[]) {
     unsigned int y;
     unsigned int* p = &x;
     unsigned int* q = &y;
-    double theta = 0.0;
+    double theta;
     unsigned int maxRecursion = 100;        // Maximum number of times for loop will run.
-    double minTheta = 0.000000001;
-
-    for (unsigned int i = 0; (i < maxRecursion) || (theta > minTheta); i++) {
-        function::indiciesOfMaxOffDiagnalElement(A, N, N, p, q);
+    double z;
+    double* maxValue = &z;
+    double tolerance;
+    unsigned int numberOfItterations = 0;
+    
+    const clock_t begin_time = clock();
+    
+    function::maxOffDiagnalElement(A, N, maxValue, p, q);
+    for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+        function::maxOffDiagnalElement(A, N, maxValue, p, q);
         theta = atan(
                      (2*A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                      ) / 2.0;
         function::jacobiRotation(A, N, *p, *q, theta);
     }
+    
+    std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+    std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
+    std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
 
+    /*
     function::printMatrix(A, N, N);
     //make identity matrix for tqli
     double* ones = function::generateConstantVector(N, 1);
     double* zeros = function::generateConstantVector(N-1, 0);
-    double** z  = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+    double** I  = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
 
-    tqli(b,a,N,z); //householder method
+    //tqli(b,a,N,I); //householder method
 
     function::printDiagonals(A,N);
     function::printVector(b,N);
 
-
+*/
 
     delete [] a;
     delete [] b;

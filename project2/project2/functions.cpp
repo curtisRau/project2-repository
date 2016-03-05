@@ -205,16 +205,29 @@ namespace function {
     //    unsigned int y;
     //    unsigned int *p = &x;
     //    unsigned int *q = &y;
-    void indiciesOfMaxOffDiagnalElement (double** A, unsigned int m, unsigned int n, unsigned int* p, unsigned int* q) {
-        double max = 0.0;
-        for (unsigned int i = 0; i<m; i++) {
-            for (unsigned int j = 0; (j<n) && (j != i); j++) {
-                if ( fabs(A[i][j]) > max ) {
-                    max = fabs(A[i][j]);
+    void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q) {
+        *value = 0.0;
+        for (unsigned int i = 0; i<matrixSize; i++) {
+            for (unsigned int j = 0; (j<matrixSize) && (j != i); j++) {
+                if ( fabs(A[i][j]) > *value ) {
+                    *value = fabs(A[i][j]);
                     *p = i;
                     *q = j;
                 }
             }
         }
+    }
+    
+    
+    // A function that returns the smallest on-diagonal matrix element.
+    // This is used to extract the smallest eigenvalue.
+    double minDiagonalElement (double** A, unsigned int matrixSize) {
+        double min = A[0][0];
+        for (unsigned int i = 1; i < matrixSize; i++) {
+            if (A[i][i] < min) {
+                min = A[i][i];
+            }
+        }
+        return min;
     }
 }
