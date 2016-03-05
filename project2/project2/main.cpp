@@ -22,15 +22,21 @@ double V (double rho) {
     return rho * rho;           // + beta / rho;
 }
 
+// Convert the eigenvalue to energy
+double eigenvalue2Energy {
+    return ;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N    = 10;
-    double       rho0 = 0.000000001;        // The starting position, probably 0.0, but 1/0 encountered.
-    double       h    = 1;                  // The step length
-    double       h2   = h*h;                // Step Length Squared;
+    unsigned int N      = 10;                       // The number of ??? should this be N-2 or something?
+    double       rhoMin = 0.0;                      // The starting position.
+    double       rhoMax = 200;
+    double       h      = (rhoMax - rhoMin) / N;    // The step length
+    double       h2     = h*h;                      // Step Length Squared;
     
     // Generate the A matrix which the Jacobi Method will diagonalize
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +46,7 @@ int main(int argc, const char * argv[]) {
     double* c = function::generateConstantVector(N-1, -1/h2);
     double* b = new double[N];
     for (int i = 0; i < N; i++) {
-        b[i] = 1/h2 + V(rho0 + i*h);
+        b[i] = 2/h2 + V(rhoMin + i*h);
     }
     
     // Passing vector arguments instead of making calls to the functions
@@ -66,6 +72,8 @@ int main(int argc, const char * argv[]) {
     double tolerance;
     unsigned int numberOfItterations = 0;
     
+    const clock_t begin_time = clock();
+    
     function::maxOffDiagnalElement(A, N, maxValue, p, q);
     for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
         function::maxOffDiagnalElement(A, N, maxValue, p, q);
@@ -75,8 +83,11 @@ int main(int argc, const char * argv[]) {
         function::jacobiRotation(A, N, *p, *q, theta);
     }
     
+    std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
     std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
+    std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
 
+    /*
     function::printMatrix(A, N, N);
     //make identity matrix for tqli
     double* ones = function::generateConstantVector(N, 1);
@@ -88,7 +99,7 @@ int main(int argc, const char * argv[]) {
     function::printDiagonals(A,N);
     function::printVector(b,N);
 
-
+*/
 
     delete [] a;
     delete [] b;
