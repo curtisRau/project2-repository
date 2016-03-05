@@ -9,6 +9,8 @@
 #include <iostream>
 #include "functions.hpp"
 #include <math.h>           // for atan
+#include "time.h"
+//#include "lib.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,8 +48,8 @@ int main(int argc, const char * argv[]) {
     // to be vectorizable.
     double** A = function::genTridiagMatVectArgsExact(N, a, b, c);
     
-    delete [] a;
-    delete [] b;
+    //delete [] a;
+    //delete [] b;
     delete [] c;
     
     // Implement the Jacobi Method
@@ -75,5 +77,20 @@ int main(int argc, const char * argv[]) {
     
     std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
 
+    function::printMatrix(A, N, N);
+    //make identity matrix for tqli
+    double* ones = function::generateConstantVector(N, 1);
+    double* zeros = function::generateConstantVector(N-1, 0);
+    double** I  = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+
+    tqli(b,a,N,I); //householder method
+
+    function::printDiagonals(A,N);
+    function::printVector(b,N);
+
+
+
+    delete [] a;
+    delete [] b;
     return 0;
 }

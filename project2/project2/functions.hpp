@@ -16,6 +16,7 @@
 namespace function {
     void printMatrix (double** A, unsigned int m, unsigned int n);
     void printVector (double* d, unsigned int n);
+    void printDiagonals (double** A, unsigned int n);
     double* generateConstantVector (unsigned int length, double val);
     double** genTridiagMatConstArgsExact (unsigned int n, double a, double b, double c);
     double** genTridiagMatConstArgsFast (unsigned int n, double a, double b, double c);
