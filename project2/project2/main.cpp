@@ -45,9 +45,13 @@ int main(int argc, const char * argv[]) {
     double* a = function::generateConstantVector(N-1, -1/h2);
     double* c = function::generateConstantVector(N-1, -1/h2);
     double* b = new double[N];
-    for (int i = 0; i < N; i++) {
+
+    b[0]=0;
+    for (int i = 1; i < N; i++) {
         b[i] = 2/h2 + V(rhoMin + i*h);
     }
+
+
     
     // Passing vector arguments instead of making calls to the functions
     // that generate the vector arguments allows the following function
