@@ -23,7 +23,7 @@ double V (double rho) {
 }
 
 // Convert the eigenvalue to energy
-double eigenvalue2Energy () {
+double eigenvalue2Energy (double eigenvalue) {
     return 0.0;
 }
 
