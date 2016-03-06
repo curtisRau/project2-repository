@@ -229,17 +229,17 @@ void **matrix(int row, int col, int num_bytes)
   int      i, num;
   char     **pointer, *ptr;
 
-  pointer = new(nothrow) char* [row];
+      pointer = new(std::nothrow) char* [row];
   if(!pointer) {
-    cout << "Exception handling: Memory allocation failed";
-    cout << " for "<< row << "row addresses !" << endl;
+      std::cout << "Exception handling: Memory allocation failed";
+    std::cout << " for "<< row << "row addresses !" << std::endl;
     return NULL;
   }
   i = (row * col * num_bytes)/sizeof(char);
-  pointer[0] = new(nothrow) char [i];
+  pointer[0] = new(std::nothrow) char [i];
   if(!pointer[0]) {
-    cout << "Exception handling: Memory allocation failed";
-    cout << " for address to " << i << " characters !" << endl;
+    std::cout << "Exception handling: Memory allocation failed";
+    std::cout << " for address to " << i << " characters !" << std::endl;
     return NULL;
   }
   ptr = pointer[0];
@@ -289,19 +289,19 @@ void rk4(double *y, double *dydx, int n, double x, double h, double  *yout,
 
               // local memory allocation
 
-  dym = new(nothrow) double [n];
+    dym = new(std::nothrow) double [n];
   if(!dym) {
     printf("\n\nError in function rk4():");
     printf("\nNot enough memory for dym[%d]\n",n);
     exit(1);
   }
-  dyt = new(nothrow) double [n];
+    dyt = new(std::nothrow) double [n];
   if(!dyt) {
     printf("\n\nError in function rk4():");
     printf("\nNot enough memory for dyt[%d]\n",n);
     exit(1);
   }
-  yt = new(nothrow) double [n];
+    yt = new(std::nothrow) double [n];
   if(!yt) {
     printf("\n\nError in function rk4():");
     printf("\nNot enough memory for yt[%d]\n",n);
@@ -364,7 +364,7 @@ void ludcmp(double **a, int n, int *indx, double *d)
    int      i, imax, j, k;
    double   big, dum, sum, temp, *vv;
 
-  vv = new(nothrow) double [n];
+    vv = new(std::nothrow) double [n];
   if(!vv) {
     printf("\n\nError in function ludcm():");
     printf("\nNot enough memory for vv[%d]\n",n);
@@ -845,7 +845,7 @@ void spline(double x[], double y[], int n, double yp1, double yp2, double y2[])
    int          i,k;
    double       p,qn,sig,un,*u;
 
-  u = new(nothrow) double [n];
+  u = new(std::nothrow) double [n];
   if(!u) {
     printf("\n\nError in function spline():");
     printf("\nNot enough memory for u[%d]\n",n);
@@ -929,14 +929,14 @@ void polint(double xa[], double ya[], int n, double x, double *y, double *dy)
   
   dif = fabs(x - xa[0]);
 
-  c = new(nothrow) double [n];
+  c = new(std::nothrow) double [n];
   if(!c) {
     printf("\n\nError in function polint():");
     printf("\nNot enough memory for c[%d]\n",n);
     exit(1);
   }
 
-  d = new(nothrow) double [n];
+  d = new(std::nothrow) double [n];
   if(!d) {
     printf("\n\nError in function polint():");
     printf("\nNot enough memory for d[%d]\n",n);
