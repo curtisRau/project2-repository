@@ -14,7 +14,7 @@
 #include <cmath>
 #include <cstring>
 
-using namespace std;
+//using namespace std;
 
 
 #define   NULL_PTR   (void *) 0
@@ -22,17 +22,17 @@ using namespace std;
 //#define   INFINITY   1.0E15
 #define   UL         unsigned long
 
-         /* a macro used in function pythag() */
+//          a macro used in function pythag() 
 
 static float sqrarg;
 #define SQR(a) ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg)
 
 
-     /* Macro definitions for integer arguments only */
+//      Macro definitions for integer arguments only 
 
 #define   SIGN(a,b) ((b)<0 ? -fabs(a) : fabs(a))
 
-    // ******   data declaration  ******* 
+//     ******   data declaration  ******* 
 
 void  **matrix(int, int, int);
 void free_matrix(void **);
