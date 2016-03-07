@@ -13,6 +13,16 @@
 
 namespace function {
     
+    // --description--
+    void plotVector (double* vec, unsigned int xMin, unsigned int xMax, unsigned int xScale, double yScale) {
+        for (unsigned int i = xMin; i < xMax; i += xScale) {
+            for (unsigned int j = 0; j < yScale * vec[i] * vec[i]; j++) {           // Plots the square of the vec[i]
+                std::cout << "-";
+            }
+            std::cout << std::endl;
+        }
+    }
+    
     // A function to print a matrix for debugging purposes
     void printMatrix (double** A, unsigned int m, unsigned int n) {
         for (unsigned int i = 0; i<m; i++) {
@@ -48,6 +58,7 @@ namespace function {
         }
         return vec;
     }
+    
     
     // Generate Tridiagonal Matrix with Constant Arguments Exact:
     // Returns a n by n tridiagonal matrix.  The sub-diagonal elements are
@@ -229,5 +240,31 @@ namespace function {
             }
         }
         return min;
+    }
+    
+    
+    // A function to returen the "numOfElem2Return" smallest values from a one dimentional
+    // array "vec" of size "vecSize".
+    double* minVectorElements (double* vec, unsigned int vecSize, unsigned int numOfElem2Return) {
+        double* minElemsVec = new double [numOfElem2Return];
+        double* XX = new double[numOfElem2Return];
+        
+        minElemsVec[0] = vec[0];
+        XX[0]          = vec[0];
+        for (unsigned int i = 0; i < vecSize; i++) {
+            for (unsigned int j = 0; j < numOfElem2Return; j++) {
+                
+                if (vec[i] < minElemsVec[j]) {
+                    minElemsVec[j] = vec[i];
+                    for (NULL; j < (numOfElem2Return - 1); j++) {
+                        minElemsVec[j+1] = XX[j];                           // Shift forward
+                        XX[j] = minElemsVec[j];                             // Copy minElemsVec to XX
+                    }
+                    XX[numOfElem2Return] = minElemsVec[numOfElem2Return];   // Copy minElemsVec to XX
+                }
+            }
+        }
+        delete [] XX;
+        return minElemsVec;
     }
 }
