@@ -14,6 +14,7 @@
 #endif
 
 namespace function {
+    void plotVector (double* vec, unsigned int xMin, unsigned int xMax, unsigned int xScale, double yScale);
     void printMatrix (double** A, unsigned int m, unsigned int n);
     void printVector (double* d, unsigned int n);
     void printDiagonals (double** A, unsigned int n);
@@ -27,4 +28,5 @@ namespace function {
     double off (double** A, unsigned int matrixSize);
     void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q);
     double minDiagonalElement (double** A, unsigned int matrixSize);
+    double* minVectorElements (double* vec, unsigned int vecSize, unsigned int numOfElem2Return);
 }
