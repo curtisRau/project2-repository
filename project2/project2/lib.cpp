@@ -58,8 +58,8 @@ void jacobi_rot(double** a, double s, double tau, int i, int j, int k, int l)
 
 void tqli(double *d, double *e, int n, double **z)
 {
-    register int   m,l,iter,i,k;
-    double         s,r,p,g,f,dd,c,b;
+    int    m,l,iter,i,k;
+    double s,r,p,g,f,dd,c,b;
 
     for(i = 1; i < n; i++) {
         e[i-1] = e[i];
@@ -122,11 +122,17 @@ void tqli(double *d, double *e, int n, double **z)
 
 double pythag(double a, double b)
 {
-  double absa,absb;
-  absa=fabs(a);
-  absb=fabs(b);
-  if (absa > absb) return absa*sqrt(1.0+SQR(absb/absa));
-  else return (absb == 0.0 ? 0.0 : absb*sqrt(1.0+SQR(absa/absb)));
+  double absa = fabs(a);
+  double absb = fabs(b);
+    if (absa > absb) {
+        return absa * sqrt(1.0 + SQR(absb/absa));
+    } else {
+        if (absb == 0.0) {
+            return 0.0;
+        } else {
+            return absb * sqrt(1.0 + SQR(absa/absb));
+        }
+    }
 }
 // End: function pythag(), (C) Copr. 1986-92 Numerical Recipes Software )%.
 

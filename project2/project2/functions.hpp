@@ -29,4 +29,6 @@ namespace function {
     void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q);
     double minDiagonalElement (double** A, unsigned int matrixSize);
     double* minVectorElements (double* vec, unsigned int vecSize, unsigned int numOfElem2Return);
+    void saveMatrix4Mathematica (const char* filename, double** matrix, unsigned int matrixSizeM, unsigned int matrixSizeN);
+    void saveArray4Mathematica (const char* filename, double* array, unsigned int arraySize);
 }
