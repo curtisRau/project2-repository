@@ -1,6 +1,6 @@
 # Xcode Files
 *.xcodeproj
-#*.xcodeproj/*
+DerivedData/
 
 # QT project files
 *.pro

@@ -34,6 +34,8 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
+    std::cout << "path of directory" << argv[0] << std::endl;
+    
     unsigned int N      = 1000;                       // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
     double       rhoMax = 5.0;
