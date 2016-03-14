@@ -9,7 +9,7 @@
 #include "functions.hpp"
 #include <iostream>         // For std::cout
 #include "math.h"           // For sqrt function.
-
+#include <fstream>              // for working with files.
 
 namespace function {
     
@@ -178,21 +178,27 @@ namespace function {
         return sqrt(sum);
     }
     
-    //
+    // Computational Overhead:
+    // -- Additions/Subtractions: 7 + (N-2)*2
+    // -- Multiplications       : 
+    // -- Memory Read           :
+    // -- Memory Write          :
     void jacobiRotation (double** A, unsigned int matrixSize, unsigned int i, unsigned int j, float theta) {
-        double s = sin(theta);
-        double c = cos(theta);
-        
-        A[i][i] = (c*c) * A[i][i] - (2*s*c) * A[i][j] + (s*s) * A[j][j];
-        A[j][j] = (s*s) * A[i][i] + (2*s*c) * A[i][j] + (c*c) * A[j][j];
-        A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);
-        A[j][i] = A[i][j];
-        
-        for (unsigned int k = 0; (k < matrixSize) && (k != i) && (k != j); k++) {
-            A[i][k] = c * A[i][k] - s * A[j][k];
-            A[k][i] = A[i][k];
-            A[j][k] = s * A[i][k] + c * A[j][k];
-            A[k][j] = A[j][k];
+        if (i != j) {
+            double s = sin(theta);                                                      // Read = 1; Write = 1;
+            double c = cos(theta);                                                      // Read = 1; Write = 1;
+            
+            A[i][i] = (c*c) * A[i][i] - (2*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
+            A[j][j] = (s*s) * A[i][i] + (2*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
+            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
+            A[j][i] = A[i][j];
+            
+            for (unsigned int k = 0; (k < matrixSize) && (k != i) && (k != j); k++) {   // Number of executions = matrixSize - 2
+                A[i][k] = c * A[i][k] - s * A[j][k];                                    // Mult = 2; Add = 1;
+                A[k][i] = A[i][k];
+                A[j][k] = s * A[i][k] + c * A[j][k];                                    // Mult = 2; Add = 1;
+                A[k][j] = A[j][k];
+            }
         }
     }
     
@@ -266,5 +272,43 @@ namespace function {
         }
         delete [] XX;
         return minElemsVec;
+    }
+    
+    void saveMatrix4Mathematica (const char* filename, double** matrix, unsigned int matrixSizeM, unsigned int matrixSizeN) {
+        std::ofstream outputFile;
+        outputFile.open(filename, std::ios::out | std::ios::trunc);         // Open a file for output and overwrite current content if it exists.
+        
+        if (outputFile.is_open()) {                                         // If the file is open...
+            for (unsigned int i = 0; i < (matrixSizeM - 1); i++) {
+                outputFile << matrix[i][0];
+                for (unsigned int j = 1; j < matrixSizeN; j++) {
+                    outputFile << "\t" << matrix[i][j];
+                }
+                outputFile << "\r";
+            }
+            outputFile << matrix[matrixSizeM - 1][0];
+            for (unsigned int j = 1; j < matrixSizeN; j++) {
+                outputFile << "," << matrix[matrixSizeM - 1][j];
+            }
+        } else {
+            std::cout << "File '" << filename << "' did not open /r";
+        }
+        outputFile.close();
+    }
+    
+    // Can be vectorized.
+    void saveArray4Mathematica (const char* filename, double* array, unsigned int arraySize) {
+        std::ofstream outputFile;
+        outputFile.open(filename, std::ios::out | std::ios::trunc);         // Open a file for output and overwrite current content if it exists.
+        
+        if (outputFile.is_open()) {                                         // If the file is open...
+            outputFile << array[0];
+            for (unsigned int i = 0; i < arraySize; i++) {
+                outputFile << "\t" << array[i];
+            }
+        } else {
+            std::cout << "File '" << filename << "' did not open /r";
+        }
+        outputFile.close();
     }
 }
