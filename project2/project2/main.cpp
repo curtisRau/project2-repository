@@ -17,9 +17,14 @@
 
 //const double beta = 1.0;             // beta may not be equal to one.  This is a constant in the equation we are trying to solve.
 
-// This is the potential
+// This is the potential for part a
 double V (double rho) {
     return rho * rho;           // + beta / rho;
+}
+
+// This is the potential for part c
+double Vc (double rho, double omega) {
+    return omega*omega*rho*rho + 1/rho;           // + beta / rho;
 }
 
 //// Convert the eigenvalue to energy
@@ -34,7 +39,7 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N      = 2000;                       // The number of steps;  The number of points is N+1
+    unsigned int N      = 100;                       // The number of steps;  The number of points is N+1
     double       rhoMin = 0.0;                      // The starting position.
     double       rhoMax = 10;
     double       h      = (rhoMax - rhoMin) / N;    // The step length
