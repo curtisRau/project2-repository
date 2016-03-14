@@ -58,13 +58,10 @@ void jacobi_rot(double** a, double s, double tau, int i, int j, int k, int l)
 
 void tqli(double *d, double *e, int n, double **z)
 {
-    int    m,l,iter,i,k;
-    double s,r,p,g,f,dd,c,b;
-
-    for(i = 1; i < n; i++) {
-        e[i-1] = e[i];
-    };
+    register int   m,l,iter,i,k;
+    double         s,r,p,g,f,dd,c,b;
     
+    for(i = 1; i < n; i++) e[i-1] = e[i];
     e[n] = 0.0;
     for(l = 0; l < n; l++) {
         iter = 0;
@@ -73,7 +70,6 @@ void tqli(double *d, double *e, int n, double **z)
                 dd = fabs(d[m]) + fabs(d[m+1]);
                 if((double)(fabs(e[m])+dd) == dd) break;
             }
-            
             if(m != l) {
                 if(iter++ == 30) {
                     printf("\n\nToo many iterations in tqli.\n");
@@ -84,32 +80,27 @@ void tqli(double *d, double *e, int n, double **z)
                 g = d[m]-d[l]+e[l]/(g+SIGN(r,g));
                 s = c = 1.0;
                 p = 0.0;
-            
                 for(i = m-1; i >= l; i--) {
                     f      = s * e[i];
                     b      = c*e[i];
                     e[i+1] = (r=pythag(f,g));
-                    
                     if(r == 0.0) {
                         d[i+1] -= p;
                         e[m]    = 0.0;
                         break;
                     }
-               
                     s      = f/r;
                     c      = g/r;
                     g      = d[i+1] - p;
                     r      = (d[i] - g) * s + 2.0 * c * b;
                     d[i+1] = g + (p = s * r);
                     g      = c * r - b;
-              
                     for(k = 0; k < n; k++) {
                         f         = z[k][i+1];
                         z[k][i+1] = s * z[k][i] + c * f;
                         z[k][i]   = c * z[k][i] - s * f;
                     } /* end k-loop */
                 } /* end i-loop */
-            
                 if(r == 0.0 && i >= l) continue;
                 d[l] -= p;
                 e[l]  = g;

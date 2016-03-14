@@ -34,8 +34,6 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
-    std::cout << "path of directory" << argv[0] << std::endl;
-    
     unsigned int N      = 1000;                       // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
     double       rhoMax = 5.0;
@@ -48,7 +46,7 @@ int main(int argc, const char * argv[]) {
     // Implement the Jacobi Method
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (true) {
+    if (false) {
         std::cout << " ----------- Jacobi Method ----------- " << std::endl;
         
         unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
@@ -111,7 +109,7 @@ int main(int argc, const char * argv[]) {
     // Implement Householder Algorithm
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (false) {
+    if (true) {
         std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
         
         begin_time = clock();                                   // Start the clock.
@@ -146,8 +144,8 @@ int main(int argc, const char * argv[]) {
         
         // Save output
         if (true) {
-            function::saveMatrix4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Desktop/solutionMatrix.csv", I, N, N);
-            function::saveArray4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Desktop/eigenvalueArray.csv", b, N);
+            function::saveMatrix4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Documents/School/Physics/PHY480ComputationalPhysics/Project2/project2-repository/dataOut/solutionMatrix.csv", I, N, N);
+            function::saveArray4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Documents/School/Physics/PHY480ComputationalPhysics/Project2/project2-repository/dataOut/eigenvalueArray.csv", b, N);
         }
         
         // Deallocate Memory

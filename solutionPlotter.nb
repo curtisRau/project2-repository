@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      5081,        154]
-NotebookOptionsPosition[      4678,        135]
-NotebookOutlinePosition[      5034,        151]
-CellTagsIndexPosition[      4991,        148]
+NotebookDataLength[      5170,        155]
+NotebookOptionsPosition[      4765,        136]
+NotebookOutlinePosition[      5123,        152]
+CellTagsIndexPosition[      5080,        149]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -25,7 +25,7 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
-      "\"\<solutionMatrix.csv\>\""}], "}"}], "]"}]}], 
+      "\"\<dataOut/solutionMatrix.csv\>\""}], "}"}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"solutions", "=", 
@@ -38,7 +38,7 @@ Cell[BoxData[{
     RowBox[{"{", 
      RowBox[{
       RowBox[{"NotebookDirectory", "[", "]"}], ",", 
-      "\"\<eigenvalueArray.csv\>\""}], "}"}], "]"}]}], 
+      "\"\<dataOut/eigenvalueArray.csv\>\""}], "}"}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"eigenvalues", "=", 
@@ -48,7 +48,7 @@ Cell[BoxData[{
  CellChangeTimes->{{3.6668852742340307`*^9, 3.666885292163743*^9}, {
    3.6668854192018547`*^9, 3.666885419963233*^9}, {3.6668854782161207`*^9, 
    3.666885490480033*^9}, 3.6668856232373037`*^9, {3.666886211064527*^9, 
-   3.66688632394016*^9}}],
+   3.66688632394016*^9}, {3.666887662368647*^9, 3.666887681572699*^9}}],
 
 Cell[BoxData[
  RowBox[{
@@ -99,17 +99,17 @@ Cell[BoxData[
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`i$$ = 5., Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`i$$ = 1, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`i$$], 1, 1000}}, Typeset`size$$ = {
     360., {102., 106.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`i$4807$$ = 0}, 
+    Typeset`skipInitDone$$ = True, $CellContext`i$9355$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`i$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`i$$, $CellContext`i$4807$$, 0]}, 
+        Hold[$CellContext`i$$, $CellContext`i$9355$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
@@ -130,11 +130,12 @@ Cell[BoxData[
    StripOnInput->False],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{
-  3.666886385073032*^9, {3.666886433875935*^9, 3.6668864410273237`*^9}}]
+  3.666886385073032*^9, {3.666886433875935*^9, 3.6668864410273237`*^9}, 
+   3.666887823784643*^9}]
 }, Open  ]]
 },
 WindowSize->{808, 587},
-WindowMargins->{{4, Automatic}, {Automatic, 4}},
+WindowMargins->{{157, Automatic}, {Automatic, 0}},
 FrontEndVersion->"10.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (December 10, \
 2015)",
 StyleDefinitions->"Default.nb"
@@ -150,11 +151,11 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 1083, 30, 80, "Input"],
-Cell[1644, 52, 895, 30, 59, "Input"],
+Cell[558, 20, 1145, 30, 80, "Input"],
+Cell[1706, 52, 895, 30, 59, "Input"],
 Cell[CellGroupData[{
-Cell[2564, 86, 443, 10, 80, "Input"],
-Cell[3010, 98, 1652, 34, 314, "Output"]
+Cell[2626, 86, 443, 10, 80, "Input"],
+Cell[3072, 98, 1677, 35, 314, "Output"]
 }, Open  ]]
 }
 ]
