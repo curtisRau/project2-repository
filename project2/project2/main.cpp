@@ -172,7 +172,7 @@ int main(int argc, const char * argv[]) {
     for (int r = 0; r < 4; r++) {
         omega[3]=5;
         //Perform Jacobi Algorithm with potential Vc
-        
+        //test edit
     }
     
     }
