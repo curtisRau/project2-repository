@@ -14,8 +14,8 @@
 #include <cstring>
 
 static float sqrarg;
-#define SQR(a) ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg)          // Required by pythag
-#define   SIGN(a,b) ((b)<0 ? -fabs(a) : fabs(a))                        // Required by tqli
+#define SQR(a)    ((sqrarg = (a)) == 0.0 ? 0.0 : sqrarg * sqrarg)          // Required by pythag
+#define SIGN(a,b) ((b)<0 ? -fabs(a) : fabs(a))                        // Required by tqli
 
 void tqli(double *, double *, int, double **);
 double pythag(double, double);                                          // Required by tqli

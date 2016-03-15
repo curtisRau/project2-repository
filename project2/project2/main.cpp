@@ -34,7 +34,7 @@ double V (double rho) {
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N      = 1000;                       // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
+    unsigned int N      = 1000;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
     double       rhoMax = 5.0;
     double       h      = (rhoMax - rhoMin) / (N + 1);  // The step length
@@ -58,6 +58,11 @@ int main(int argc, const char * argv[]) {
         // Generate the A matrix which the Jacobi Method will diagonalize
         double* a = function::generateConstantVector(N-1, -1.0/h2);
         double* c = function::generateConstantVector(N-1, -1.0/h2);
+        
+//        double* b = new double[N];
+//        for (int i = 0; i < N; i++) {
+//            b[i] = (2.0 / h2) + V(rhoMin + (i+1)*h);
+//        }
         
         double* b = new double[N];
         for (int i = 0; i < N; i++) {
@@ -127,7 +132,7 @@ int main(int argc, const char * argv[]) {
         
         double* b = new double [N];
         for (int i = 0; i < N; i++) {
-            b[i] = (2.0 / h2) + V(rhoMin + ((double)i)*h);
+            b[i] = (2.0 / h2) + V(rhoMin + (i+1)*h);
         }
         
         tqli(b,a,N,I); // householder method
