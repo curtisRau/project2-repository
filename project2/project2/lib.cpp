@@ -61,8 +61,9 @@ void tqli(double *d, double *e, int n, double **z)
     register int   m,l,iter,i,k;
     double         s,r,p,g,f,dd,c,b;
     
-    for(i = 1; i < n; i++) e[i-1] = e[i];
-        e[n-1] = 0.0;
+    for(i = 1; i < n; i++)
+        e[i-1] = e[i];
+        e[n]   = 0.0;
         for(l = 0; l < n; l++) {
             iter = 0;
             do {

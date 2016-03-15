@@ -193,6 +193,30 @@ namespace function {
             A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
             A[j][i] = A[i][j];
             
+            for (unsigned int k = 0; k < matrixSize; k++) {   // Number of executions = matrixSize - 2
+                if ((k != i) && (k != j)) {
+                    A[i][k] = c * A[i][k] - s * A[j][k];                                    // Mult = 2; Add = 1;
+                    A[k][i] = A[i][k];
+                    A[j][k] = s * A[i][k] + c * A[j][k];                                    // Mult = 2; Add = 1;
+                    A[k][j] = A[j][k];
+                }
+            }
+        }
+    }
+    
+    // Computational Overhead:
+    // -- Additions/Subtractions: 7 + (N-2)*2
+    // -- Multiplications       :
+    // -- Memory Read           :
+    // -- Memory Write          :
+    void jacobiRotationSC (double** A, unsigned int matrixSize, unsigned int i, unsigned int j, double s, double c) {
+        if (i != j) {
+            
+            A[i][i] = (c*c) * A[i][i] - (2*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
+            A[j][j] = (s*s) * A[i][i] + (2*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
+            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
+            A[j][i] = A[i][j];
+            
             for (unsigned int k = 0; (k < matrixSize) && (k != i) && (k != j); k++) {   // Number of executions = matrixSize - 2
                 A[i][k] = c * A[i][k] - s * A[j][k];                                    // Mult = 2; Add = 1;
                 A[k][i] = A[i][k];
@@ -207,8 +231,10 @@ namespace function {
         // The square root of the sum of the squares of the off diagonal elements.
         double sum = 0.0;
         for (unsigned int i=0; i < matrixSize; i++) {
-            for (unsigned int j=0; (j<matrixSize && i!=j); j++) {
-                sum += (A[i][j]) * (A[i][j]);
+            for (unsigned int j=0; j < matrixSize; j++) {
+                if (i!=j) {
+                    sum += (A[i][j]) * (A[i][j]);
+                }
             }
         }
         return sqrt(sum);
@@ -224,12 +250,14 @@ namespace function {
     //    unsigned int *q = &y;
     void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q) {
         *value = 0.0;
-        for (unsigned int i = 0; i<matrixSize; i++) {
-            for (unsigned int j = 0; (j<matrixSize) && (j != i); j++) {
-                if ( fabs(A[i][j]) > *value ) {
-                    *value = fabs(A[i][j]);
-                    *p = i;
-                    *q = j;
+        for (unsigned int i = 0; i < matrixSize; i++) {
+            for (unsigned int j = 0; j < matrixSize; j++) {
+                if (j != i) {
+                    if ( fabs(A[i][j]) > *value ) {
+                        *value = fabs(A[i][j]);
+                        *p = i;
+                        *q = j;
+                    }
                 }
             }
         }
