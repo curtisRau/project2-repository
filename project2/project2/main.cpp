@@ -157,5 +157,21 @@ int main(int argc, const char * argv[]) {
 
     }
 
+//part c
+    if (false){
+    double* omega = new double[4];
+    omega[0]=.01;
+    omega[1]=0.5;
+    omega[2]=1;
+    omega[3]=5;
+
+    for (int r = 0; r < 4; r++) {
+        omega[3]=5;
+        //Perform Jacobi Algorithm with potential Vc
+        
+    }
+    
+    }
+
     return 0;
 }
