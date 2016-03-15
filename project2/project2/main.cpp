@@ -37,8 +37,8 @@ double Vc (double rho, double omega) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, const char * argv[]) {
-
-    unsigned int N      = 1000;                       // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
+    
+    unsigned int N      = 1000;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
     double       rhoMax = 5.0;
     double       h      = (rhoMax - rhoMin) / (N + 1);  // The step length
@@ -50,7 +50,7 @@ int main(int argc, const char * argv[]) {
     // Implement the Jacobi Method
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (false) {
+    if (true) {
         std::cout << " ----------- Jacobi Method ----------- " << std::endl;
 
         unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
@@ -62,10 +62,10 @@ int main(int argc, const char * argv[]) {
         // Generate the A matrix which the Jacobi Method will diagonalize
         double* a = function::generateConstantVector(N-1, -1.0/h2);
         double* c = function::generateConstantVector(N-1, -1.0/h2);
-
-        double* b = new double[N];
+        
+        double* b = new double [N];
         for (int i = 0; i < N; i++) {
-            b[i] = (2.0 / h2) + V(rhoMin + i*h);
+            b[i] = (2.0 / h2) + V(rhoMin + (i+1)*h);
         }
 
         // Passing vector arguments instead of making calls to the functions
@@ -86,16 +86,27 @@ int main(int argc, const char * argv[]) {
         double z;
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
+        double sin;
+        double cos;
 
         function::maxOffDiagnalElement(A, N, maxValue, p, q);
         for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
             function::maxOffDiagnalElement(A, N, maxValue, p, q);
             theta = atan(
-                         (2*A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                          ) / 2.0;
             function::jacobiRotation(A, N, *p, *q, theta);
         }
-
+        
+//        function::maxOffDiagnalElement(A, N, maxValue, p, q);
+//        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+//            function::maxOffDiagnalElement(A, N, maxValue, p, q);
+//            theta = atan(
+//                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+//                         ) / 2.0;
+//            function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+//        }
+        
         std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
         std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
         std::cout << "Lagrest Off Diagonal Element = " << *maxValue << std::endl;
@@ -131,7 +142,7 @@ int main(int argc, const char * argv[]) {
 
         double* b = new double [N];
         for (int i = 0; i < N; i++) {
-            b[i] = (2.0 / h2) + V(rhoMin + ((double)i)*h);
+            b[i] = (2.0 / h2) + V(rhoMin + (i+1)*h);
         }
 
         tqli(b,a,N,I); // householder method
