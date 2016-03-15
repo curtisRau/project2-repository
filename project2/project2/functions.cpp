@@ -270,7 +270,7 @@ namespace function {
         double min = A[0][0];
         for (unsigned int i = 1; i < matrixSize; i++) {
             if (A[i][i] < min) {
-                min = A[i][i];
+                min = fabs(A[i][i]);
             }
         }
         return min;
