@@ -22,6 +22,10 @@ double V (double rho) {
     return rho * rho;           // + beta / rho;
 }
 
+double Vc (double rho, double omega) {
+    return omega*omega*rho*rho + 1/rho;           // + beta / rho;
+}
+
 //// Convert the eigenvalue to energy
 //double eigenvalue2Energy (double eigenvalue) {
 //    double hbar = ;
