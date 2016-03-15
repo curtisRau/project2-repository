@@ -173,6 +173,7 @@ int main(int argc, const char * argv[]) {
         omega[3]=5;
         //Perform Jacobi Algorithm with potential Vc
         //test edit
+        //test edit 2
     }
     
     }
