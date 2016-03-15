@@ -1,10 +1,4 @@
-//
-//  main.cpp
-//  project2
-//
-//  Created by Curtis Rau on 3/4/16.
-//  Copyright © 2016 Curtis Rau. All rights reserved.
-//
+
 
 #include <iostream>
 #include "functions.hpp"
@@ -165,7 +159,7 @@ int main(int argc, const char * argv[]) {
     omega[3]=5;
 
     for (int r = 0; r < 4; r++) {
-        unsigned int N      = 100;                       // The number of steps;  The number of points is N+1
+        unsigned int N      = 10;                       // The number of steps;  The number of points is N+1
         double       rhoMin = 0.0;                      // The starting position.
         double       rhoMax = 10;
         double       h      = (rhoMax - rhoMin) / N;    // The step length
@@ -223,6 +217,8 @@ int main(int argc, const char * argv[]) {
 //        std::cout << "Lagrest Off Diagonal Element = " << *maxValue << std::endl;
         std::cout<< "Omega_r = " << omega[r] << std::endl;
         std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
+
+        function::printDiagonals(A,N);
 
         // Deallocate memory for "A" matrix.
         for (unsigned int i = 0; i<N; i++) {
