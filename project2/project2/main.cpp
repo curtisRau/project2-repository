@@ -38,7 +38,7 @@ double Vc (double rho, double omega) {
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N      = 1000;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
+    unsigned int N      = 200;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
     double       rhoMax = 5.0;
     double       h      = (rhoMax - rhoMin) / (N + 1);  // The step length
@@ -54,7 +54,7 @@ int main(int argc, const char * argv[]) {
         std::cout << " ----------- Jacobi Method ----------- " << std::endl;
 
         unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
-        double       tolerance    = 0.0001;         // When all off diagonal matrix elements are < this, the matrix is
+        double       tolerance    = 0.1;         // When all off diagonal matrix elements are < this, the matrix is
                                                     // considered diagonalized.
 
         begin_time = clock();                       // Start the clock.
@@ -86,17 +86,12 @@ int main(int argc, const char * argv[]) {
         double z;
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
+        
+        //ELISIBETH CODE
+        double tau;
+        double tan;
         double sin;
         double cos;
-
-        function::maxOffDiagnalElement(A, N, maxValue, p, q);
-        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
-            function::maxOffDiagnalElement(A, N, maxValue, p, q);
-            theta = atan(
-                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
-                         ) / 2.0;
-            function::jacobiRotation(A, N, *p, *q, theta);
-        }
         
 //        function::maxOffDiagnalElement(A, N, maxValue, p, q);
 //        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
@@ -104,8 +99,25 @@ int main(int argc, const char * argv[]) {
 //            theta = atan(
 //                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
 //                         ) / 2.0;
-//            function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+//            function::jacobiRotation(A, N, *p, *q, theta);
 //        }
+        
+        function::maxOffDiagnalElement(A, N, maxValue, p, q);
+        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+            function::maxOffDiagnalElement(A, N, maxValue, p, q);
+            
+            tau = (A[*q][*q] - A[*p][*p]) / (2.0 * A[*p][*q]);
+            if (tau >= 0.0) {
+                tan =  1.0 / ( tau + sqrt(1.0 + tau * tau));
+            } else {
+                tan = -1.0 / (-tau + sqrt(1.0 + tau * tau));
+            }
+            
+            cos = 1.0 / sqrt(1.0 + tan * tan);
+            sin = tan * cos;
+            
+            function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+        }
         
         std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
         std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
@@ -173,12 +185,12 @@ int main(int argc, const char * argv[]) {
     }
 
 //part c
-    if (false){
-    double* omega = new double[4];
-    omega[0]=.01;
-    omega[1]=0.5;
-    omega[2]=1;
-    omega[3]=5;
+    if (false) {
+        double* omega = new double [4];
+        omega[0]=.01;
+        omega[1]=0.5;
+        omega[2]=1;
+        omega[3]=5;
 
     for (int r = 0; r < 4; r++) {
         omega[3]=5;

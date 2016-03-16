@@ -188,8 +188,8 @@ namespace function {
             double s = sin(theta);                                                      // Read = 1; Write = 1;
             double c = cos(theta);                                                      // Read = 1; Write = 1;
             
-            A[i][i] = (c*c) * A[i][i] - (2*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
-            A[j][j] = (s*s) * A[i][i] + (2*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
+            A[i][i] = (c*c) * A[i][i] - (2.0*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
+            A[j][j] = (s*s) * A[i][i] + (2.0*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
             A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
             A[j][i] = A[i][j];
             
@@ -212,16 +212,23 @@ namespace function {
     void jacobiRotationSC (double** A, unsigned int matrixSize, unsigned int i, unsigned int j, double s, double c) {
         if (i != j) {
             
-            A[i][i] = (c*c) * A[i][i] - (2*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
-            A[j][j] = (s*s) * A[i][i] + (2*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
-            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
+            double AII = A[i][i];
+            double AJJ = A[j][j];
+            
+            A[i][i] = (c*c) * AII - (2.0*s*c) * A[i][j] + (s*s) * AJJ;            // Mult = 7; Add = 2; Read =
+            A[j][j] = (s*s) * AII + (2.0*s*c) * A[i][j] + (c*c) * AJJ;            // Mult = 7; Add = 2
+            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (AII - AJJ);              // Mult = 5; Add = 3
             A[j][i] = A[i][j];
             
-            for (unsigned int k = 0; (k < matrixSize) && (k != i) && (k != j); k++) {   // Number of executions = matrixSize - 2
-                A[i][k] = c * A[i][k] - s * A[j][k];                                    // Mult = 2; Add = 1;
-                A[k][i] = A[i][k];
-                A[j][k] = s * A[i][k] + c * A[j][k];                                    // Mult = 2; Add = 1;
-                A[k][j] = A[j][k];
+            double AIK;
+            for (unsigned int k = 0; k < matrixSize; k++) {   // Number of executions = matrixSize - 2
+                if ((k != i) && (k != j)) {
+                    AIK = A[i][k];
+                    A[i][k] = c * AIK - s * A[j][k];                                    // Mult = 2; Add = 1;
+                    A[k][i] = A[i][k];
+                    A[j][k] = s * AIK + c * A[j][k];                                    // Mult = 2; Add = 1;
+                    A[k][j] = A[j][k];
+                }
             }
         }
     }
@@ -248,12 +255,18 @@ namespace function {
     //    unsigned int y;
     //    unsigned int *p = &x;
     //    unsigned int *q = &y;
+    
+    // THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+    // THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+    // THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+    // THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+    // THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
     void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q) {
         *value = 0.0;
         for (unsigned int i = 0; i < matrixSize; i++) {
-            for (unsigned int j = 0; j < matrixSize; j++) {
-                if (j != i) {
-                    if ( fabs(A[i][j]) > *value ) {
+            for (unsigned int j = 0; j < matrixSize; j++) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+                if (j != i) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+                    if ( fabs(A[i][j]) > *value ) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
                         *value = fabs(A[i][j]);
                         *p = i;
                         *q = j;
@@ -269,7 +282,7 @@ namespace function {
     double minDiagonalElement (double** A, unsigned int matrixSize) {
         double min = A[0][0];
         for (unsigned int i = 1; i < matrixSize; i++) {
-            if (A[i][i] < min) {
+            if (fabs(A[i][i]) < min) {
                 min = fabs(A[i][i]);
             }
         }
