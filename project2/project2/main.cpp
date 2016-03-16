@@ -87,7 +87,7 @@ int main(int argc, const char * argv[]) {
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
         
-        //ELISIBETH CODE
+        
         double tau;
         double tan;
         double sin;
