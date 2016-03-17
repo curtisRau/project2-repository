@@ -11,6 +11,7 @@
 #include <math.h>           // for atan
 #include "time.h"
 #include "lib.hpp"
+#include <string>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +88,7 @@ int main(int argc, const char * argv[]) {
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
         
-        //ELISIBETH CODE
+        
         double tau;
         double tan;
         double sin;
@@ -193,10 +194,92 @@ int main(int argc, const char * argv[]) {
         omega[3]=5;
 
     for (int r = 0; r < 4; r++) {
-        omega[3]=5;
-        //Perform Jacobi Algorithm with potential Vc
-        //test edit
-        //test edit 2
+    std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
+
+        // Implement the Jacobi Method
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if (true) {
+            std::cout << " ----------- Jacobi Method ----------- " << std::endl;
+
+            unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
+            double       tolerance    = 0.1;         // When all off diagonal matrix elements are < this, the matrix is
+                                                        // considered diagonalized.
+
+            begin_time = clock();                       // Start the clock.
+
+            // Generate the A matrix which the Jacobi Method will diagonalize
+            double* a = function::generateConstantVector(N-1, -1.0/h2);
+            double* c = function::generateConstantVector(N-1, -1.0/h2);
+
+            double* b = new double [N];
+            for (int i = 0; i < N; i++) {
+                b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h,omega[r]);
+            }
+
+            // Passing vector arguments instead of making calls to the functions
+            // that generate the vector arguments allows the following function
+            // to be vectorizable.
+            double** A = function::genTridiagMatVectArgsExact(N, a, b, c);
+
+            delete [] a;
+            delete [] b;
+            delete [] c;
+
+            // Variables for Jacobi's Metod "for" loop
+            double theta;
+            unsigned int x;
+            unsigned int y;
+            unsigned int* p = &x;
+            unsigned int* q = &y;
+            double z;
+            double* maxValue = &z;
+            unsigned int numberOfItterations = 0;
+
+
+            double tau;
+            double tan;
+            double sin;
+            double cos;
+
+    //        function::maxOffDiagnalElement(A, N, maxValue, p, q);
+    //        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+    //            function::maxOffDiagnalElement(A, N, maxValue, p, q);
+    //            theta = atan(
+    //                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+    //                         ) / 2.0;
+    //            function::jacobiRotation(A, N, *p, *q, theta);
+    //        }
+
+            function::maxOffDiagnalElement(A, N, maxValue, p, q);
+            for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
+                function::maxOffDiagnalElement(A, N, maxValue, p, q);
+
+                tau = (A[*q][*q] - A[*p][*p]) / (2.0 * A[*p][*q]);
+                if (tau >= 0.0) {
+                    tan =  1.0 / ( tau + sqrt(1.0 + tau * tau));
+                } else {
+                    tan = -1.0 / (-tau + sqrt(1.0 + tau * tau));
+                }
+
+                cos = 1.0 / sqrt(1.0 + tan * tan);
+                sin = tan * cos;
+
+                function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+            }
+
+            std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+            std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
+            std::cout << "Lagrest Off Diagonal Element = " << *maxValue << std::endl;
+            std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
+
+            // Deallocate memory for "A" matrix.
+            for (unsigned int i = 0; i<N; i++) {
+                delete [] A[i];
+            }
+            delete [] A;
+
+        }
     }
     
     }
