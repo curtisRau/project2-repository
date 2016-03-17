@@ -284,5 +284,69 @@ int main(int argc, const char * argv[]) {
     
     }
 
+ //part d
+    if (true){
+        double* omega = new double [4];
+        omega[0]=.01;
+        omega[1]=0.5;
+        omega[2]=1;
+        omega[3]=5;
+        int count = 1;
+    for (int r = 0; r < 4; r++) {
+        count++;
+        std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
+
+            std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
+
+            begin_time = clock();                                   // Start the clock.
+
+            //make identity matrix for tqli
+            double* ones  = function::generateConstantVector(N, 1);
+            double* zeros = function::generateConstantVector(N-1, 0);
+            double** I    = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+
+            // "ones" and "zeros" no longer needed.
+            delete [] ones;
+            delete [] zeros;
+
+            double* a = function::generateConstantVector(N-1, -1.0/h2);
+
+            double* b = new double [N];
+            for (int i = 0; i < N; i++) {
+                b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h,omega[r]);
+            }
+
+            tqli(b,a,N,I); // householder method
+
+            delete [] a;    // "a" no longer needed.
+            std::cout.precision(17);
+            std::cout << "Total computation time [s] = "                 << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+            std::cout << "Smallest eigenvalue (should be 3) = \t\t"      << function::minVectorElements(b, N, 3)[0]          << std::endl;
+            std::cout << "Second smallest eigenvalue (should be 7) = \t" << function::minVectorElements(b, N, 3)[1]          << std::endl;
+            std::cout << "Third smallest eigenvalue (should be 11) = \t" << function::minVectorElements(b, N, 3)[2]          << std::endl;
+
+            //function::printVector(I[1], N);
+            //function::plotVector(I[1], 0, 1000, 20, 10000);
+
+            // Save output
+            if (true) {
+                std::string r_str = std::to_string(count);
+                std::string matrixname = "matrix" + r_str + ".txt";
+                std::string arrayname = "array" + r_str + ".txt";
+                function::saveMatrix4Mathematica(matrixname, I, N, N);
+                function::saveArray4Mathematica(arrayname, b, N);
+            }
+
+            // Deallocate Memory
+            delete [] b;
+            for (unsigned int i = 0; i<N; i++) {
+                delete [] I[i];
+            }
+            delete [] I;
+
+        }
+
+
+    }//end of part d
     return 0;
 }
