@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
     // Implement the Jacobi Method
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (true) {
+    if (false) {
         std::cout << " ----------- Jacobi Method ----------- " << std::endl;
 
         unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
@@ -88,36 +88,13 @@ int main(int argc, const char * argv[]) {
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
         
-        
-        double tau;
-        double tan;
-        double sin;
-        double cos;
-        
-//        function::maxOffDiagnalElement(A, N, maxValue, p, q);
-//        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
-//            function::maxOffDiagnalElement(A, N, maxValue, p, q);
-//            theta = atan(
-//                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
-//                         ) / 2.0;
-//            function::jacobiRotation(A, N, *p, *q, theta);
-//        }
-        
         function::maxOffDiagnalElement(A, N, maxValue, p, q);
         for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
             function::maxOffDiagnalElement(A, N, maxValue, p, q);
-            
-            tau = (A[*q][*q] - A[*p][*p]) / (2.0 * A[*p][*q]);
-            if (tau >= 0.0) {
-                tan =  1.0 / ( tau + sqrt(1.0 + tau * tau));
-            } else {
-                tan = -1.0 / (-tau + sqrt(1.0 + tau * tau));
-            }
-            
-            cos = 1.0 / sqrt(1.0 + tan * tan);
-            sin = tan * cos;
-            
-            function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+            theta = atan(
+                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+                         ) / 2.0;
+            function::jacobiRotation(A, N, *p, *q, theta);
         }
         
         std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
@@ -137,7 +114,7 @@ int main(int argc, const char * argv[]) {
     // Implement Householder Algorithm
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    if (true) {
+    if (false) {
         std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
 
         begin_time = clock();                                   // Start the clock.
@@ -167,9 +144,6 @@ int main(int argc, const char * argv[]) {
         std::cout << "Second smallest eigenvalue (should be 7) = \t" << function::minVectorElements(b, N, 3)[1]          << std::endl;
         std::cout << "Third smallest eigenvalue (should be 11) = \t" << function::minVectorElements(b, N, 3)[2]          << std::endl;
 
-        //function::printVector(I[1], N);
-        //function::plotVector(I[1], 0, 1000, 20, 10000);
-
         // Save output
         if (true) {
             function::saveMatrix4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Documents/School/Physics/PHY480ComputationalPhysics/Project2/project2-repository/dataOut/solutionMatrix.csv", I, N, N);
@@ -184,9 +158,14 @@ int main(int argc, const char * argv[]) {
         delete [] I;
 
     }
-
-//part c
+    
+    
+    // Code for part C
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if (false) {
+        std::cout << "-- Begin Part C --" << std::endl;
+        
         double* omega = new double [4];
         omega[0]=.01;
         omega[1]=0.5;
@@ -236,36 +215,13 @@ int main(int argc, const char * argv[]) {
             double* maxValue = &z;
             unsigned int numberOfItterations = 0;
 
-
-            double tau;
-            double tan;
-            double sin;
-            double cos;
-
-    //        function::maxOffDiagnalElement(A, N, maxValue, p, q);
-    //        for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
-    //            function::maxOffDiagnalElement(A, N, maxValue, p, q);
-    //            theta = atan(
-    //                         (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
-    //                         ) / 2.0;
-    //            function::jacobiRotation(A, N, *p, *q, theta);
-    //        }
-
             function::maxOffDiagnalElement(A, N, maxValue, p, q);
             for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
                 function::maxOffDiagnalElement(A, N, maxValue, p, q);
-
-                tau = (A[*q][*q] - A[*p][*p]) / (2.0 * A[*p][*q]);
-                if (tau >= 0.0) {
-                    tan =  1.0 / ( tau + sqrt(1.0 + tau * tau));
-                } else {
-                    tan = -1.0 / (-tau + sqrt(1.0 + tau * tau));
-                }
-
-                cos = 1.0 / sqrt(1.0 + tan * tan);
-                sin = tan * cos;
-
-                function::jacobiRotationSC(A, N, *p, *q, sin, cos);
+                theta = atan(
+                             (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+                             ) / 2.0;
+                function::jacobiRotation(A, N, *p, *q, theta);
             }
 
             std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
@@ -274,7 +230,7 @@ int main(int argc, const char * argv[]) {
             std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
 
             // Deallocate memory for "A" matrix.
-            for (unsigned int i = 0; i<N; i++) {
+            for (unsigned int i = 0; i < N; i++) {
                 delete [] A[i];
             }
             delete [] A;
@@ -282,6 +238,60 @@ int main(int argc, const char * argv[]) {
         }
     }
     
+    }
+    
+    
+    // Code for part D
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if (true) {
+        std::cout << "-- Begin Part D --" << std::endl;
+        
+        double* omega = new double [4];
+        omega[0]=.01;
+        omega[1]=0.5;
+        omega[2]=1;
+        omega[3]=5;
+        
+        begin_time = clock();                                   // Start the clock.
+        
+        //make identity matrix for tqli
+        double* ones  = function::generateConstantVector(N, 1);
+        double* zeros = function::generateConstantVector(N-1, 0);
+        double** I    = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+        
+        // "ones" and "zeros" no longer needed.
+        delete [] ones;
+        delete [] zeros;
+        
+        double* a = function::generateConstantVector(N-1, -1.0/h2);
+        
+        double* b = new double [N];
+        for (int i = 0; i < N; i++) {
+            b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h, 10);
+        }
+        
+        tqli(b,a,N,I); // householder method
+        
+        delete [] a;    // "a" no longer needed.
+        std::cout.precision(17);
+        std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+        std::cout << "Smallest eigenvalue        = " << function::minVectorElements(b, N, 3)[0]          << std::endl;
+        std::cout << "Second smallest eigenvalue = " << function::minVectorElements(b, N, 3)[1]          << std::endl;
+        std::cout << "Third smallest eigenvalue  = " << function::minVectorElements(b, N, 3)[2]          << std::endl;
+        
+        // Save output
+        if (true) {
+            function::saveMatrix4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Documents/School/Physics/PHY480ComputationalPhysics/Project2/project2-repository/dataOut/solutionMatrix.csv", I, N, N);
+            function::saveArray4Mathematica("/Volumes/userFilesPartition/Users/curtisrau/Documents/School/Physics/PHY480ComputationalPhysics/Project2/project2-repository/dataOut/eigenvalueArray.csv", b, N);
+        }
+        
+        // Deallocate Memory
+        delete [] b;
+        for (unsigned int i = 0; i<N; i++) {
+            delete [] I[i];
+        }
+        delete [] I;
     }
 
     return 0;
