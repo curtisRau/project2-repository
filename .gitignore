@@ -11,3 +11,7 @@ DerivedData/
 *.gz
 
 # Ignore the QT subfolders
+
+# Generated Data
+.csv
+/dataOut

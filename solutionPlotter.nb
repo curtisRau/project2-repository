@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      9531,        259]
-NotebookOptionsPosition[      8898,        232]
-NotebookOutlinePosition[      9258,        248]
-CellTagsIndexPosition[      9215,        245]
+NotebookDataLength[     10687,        275]
+NotebookOptionsPosition[     10163,        252]
+NotebookOutlinePosition[     10523,        268]
+CellTagsIndexPosition[     10480,        265]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -33,24 +33,26 @@ Cell[BoxData[{
     RowBox[{"pathToSolutions", ",", "\"\<Table\>\""}], "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"pathToEigenvalues", "=", 
-   RowBox[{"FileNameJoin", "[", 
-    RowBox[{"{", 
-     RowBox[{
-      RowBox[{"NotebookDirectory", "[", "]"}], ",", 
-      "\"\<dataOut/eigenvalueArray.csv\>\""}], "}"}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"eigenvalues", "=", 
-   RowBox[{"Import", "[", 
-    RowBox[{"pathToEigenvalues", ",", "\"\<Table\>\""}], "]"}]}], 
-  ";"}]}], "Input",
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"pathToEigenvalues", "=", 
+     RowBox[{"FileNameJoin", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"NotebookDirectory", "[", "]"}], ",", 
+        "\"\<dataOut/eigenvalueArray.csv\>\""}], "}"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"eigenvalues", "=", 
+     RowBox[{"Import", "[", 
+      RowBox[{"pathToEigenvalues", ",", "\"\<Table\>\""}], "]"}]}], ";"}], 
+   "*)"}]}]}], "Input",
  CellChangeTimes->{{3.6668852742340307`*^9, 3.666885292163743*^9}, {
    3.6668854192018547`*^9, 3.666885419963233*^9}, {3.6668854782161207`*^9, 
    3.666885490480033*^9}, 3.6668856232373037`*^9, {3.666886211064527*^9, 
    3.66688632394016*^9}, {3.666887662368647*^9, 3.666887681572699*^9}, 
    3.66698247891346*^9, 3.666983775359417*^9, {3.667070429196167*^9, 
-   3.66707043889034*^9}}],
+   3.66707043889034*^9}, 3.667230632778524*^9, {3.667230722215693*^9, 
+   3.667230739782647*^9}, 3.667231328730665*^9}],
 
 Cell[BoxData[
  RowBox[{
@@ -89,16 +91,36 @@ Cell[CellGroupData[{
 Cell[BoxData[
  RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
   RowBox[{
-   RowBox[{"ListLinePlot", "[", 
+   RowBox[{"Show", "[", "\[IndentingNewLine]", 
     RowBox[{
-     RowBox[{"solutions", "[", 
-      RowBox[{"[", "i", "]"}], "]"}], ",", 
-     RowBox[{"DataRange", "\[Rule]", 
-      RowBox[{"{", 
-       RowBox[{"0", ",", "5"}], "}"}]}]}], "]"}], ",", "\[IndentingNewLine]", 
-   
+     RowBox[{"ListLinePlot", "[", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{
+         RowBox[{"Transpose", "[", "solutions", "]"}], "[", 
+         RowBox[{"[", "i", "]"}], "]"}]}], ",", 
+       RowBox[{"DataRange", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "5"}], "}"}]}]}], "]"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Plot", "[", 
+      RowBox[{
+       RowBox[{"HarmonicOscillator\[Psi]", "[", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"2", "n"}], "-", "1"}], ")"}], ",", "x", ",", "1", ",", 
+         "1", ",", "1"}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"x", ",", "0", ",", "5"}], "}"}]}], "]"}]}], "]"}], ",", 
+   "\[IndentingNewLine]", 
    RowBox[{"{", 
-    RowBox[{"i", ",", "1", ",", "200", ",", "1"}], "}"}]}], 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"i", ",", "71"}], "}"}], ",", "1", ",", "200", ",", "1"}], 
+    "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"n", ",", "1", ",", "10", ",", "1"}], "}"}]}], 
   "\[IndentingNewLine]", "]"}]], "Input",
  CellChangeTimes->{{3.666886348547716*^9, 3.6668863830751143`*^9}, {
    3.6668864226921253`*^9, 3.666886440313393*^9}, {3.66698203131103*^9, 
@@ -107,31 +129,46 @@ Cell[BoxData[
    3.6669824681052723`*^9}, {3.6669825447849913`*^9, 3.666982556374217*^9}, {
    3.666982950955595*^9, 3.666982984456712*^9}, {3.666983232626823*^9, 
    3.66698323416873*^9}, 3.666984781177115*^9, {3.6670679744534407`*^9, 
-   3.667067975306232*^9}}],
+   3.667067975306232*^9}, {3.667230548446974*^9, 3.667230552464965*^9}, {
+   3.667231406896678*^9, 3.667231447434807*^9}, {3.667231489499753*^9, 
+   3.667231563111507*^9}, {3.66723225088909*^9, 3.667232252910954*^9}, {
+   3.6672325098070583`*^9, 3.667232510421239*^9}, {3.667232599092483*^9, 
+   3.6672326037646303`*^9}, {3.667232654715913*^9, 3.667232657594108*^9}, {
+   3.667232702587988*^9, 3.6672327093447933`*^9}}],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`i$$ = 1, Typeset`show$$ = True, 
-    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
-    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
-    "\"untitled\"", Typeset`specs$$ = {{
-      Hold[$CellContext`i$$], 1, 200, 1}}, Typeset`size$$ = {
-    360., {103., 107.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`i$4748$$ = 0}, 
+   DynamicModuleBox[{$CellContext`i$$ = 137, $CellContext`n$$ = 1, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`i$$], 71}, 1, 200, 1}, {
+      Hold[$CellContext`n$$], 1, 10, 1}}, Typeset`size$$ = {
+    360., {106., 110.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`i$43703$$ = 
+    0, $CellContext`n$43704$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
-     1, StandardForm, "Variables" :> {$CellContext`i$$ = 1}, 
+     1, StandardForm, 
+      "Variables" :> {$CellContext`i$$ = 71, $CellContext`n$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`i$$, $CellContext`i$4748$$, 0]}, 
+        Hold[$CellContext`i$$, $CellContext`i$43703$$, 0], 
+        Hold[$CellContext`n$$, $CellContext`n$43704$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
         Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
-         Typeset`skipInitDone$$}, "Body" :> ListLinePlot[
-        Part[$CellContext`solutions, $CellContext`i$$], DataRange -> {0, 5}], 
-      "Specifications" :> {{$CellContext`i$$, 1, 200, 1}}, "Options" :> {}, 
+         Typeset`skipInitDone$$}, "Body" :> Show[
+        ListLinePlot[-Part[
+           Transpose[$CellContext`solutions], $CellContext`i$$], 
+         DataRange -> {0, 5}], 
+        Plot[
+         $CellContext`HarmonicOscillator\[Psi][
+         2 $CellContext`n$$ - 1, $CellContext`x, 1, 1, 1], {$CellContext`x, 0,
+           5}]], "Specifications" :> {{{$CellContext`i$$, 71}, 1, 200, 
+         1}, {$CellContext`n$$, 1, 10, 1}}, "Options" :> {}, 
       "DefaultOptions" :> {}],
-     ImageSizeCache->{405., {147., 152.}},
+     ImageSizeCache->{405., {164., 169.}},
      SingleEvaluation->True],
     Deinitialization:>None,
     DynamicModuleValues:>{},
@@ -146,28 +183,11 @@ Cell[BoxData[
    3.666983222244499*^9, 3.666983235008521*^9}, 3.6669834538706627`*^9, 
    3.666984451209931*^9, 3.666984534494925*^9, 3.666984781789482*^9, 
    3.66706796870998*^9, 3.667068184762995*^9, {3.6670685469314203`*^9, 
-   3.667068552254209*^9}}]
-}, Open  ]],
-
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"solutions", "[", 
-  RowBox[{"[", "1", "]"}], "]"}]], "Input",
- CellChangeTimes->{{3.6669829331289387`*^9, 3.666982935409721*^9}}],
-
-Cell[BoxData[
- RowBox[{"{", 
-  RowBox[{
-   RowBox[{"-", "0.246834`"}], ",", "0.268811`", ",", 
-   RowBox[{"-", "0.22942`"}], ",", 
-   RowBox[{"-", "0.28943`"}], ",", "0.214419`", ",", 
-   RowBox[{"-", "0.193942`"}], ",", "0.157441`", ",", "0.304235`", ",", 
-   "0.311692`", ",", "0.311233`", ",", "0.302555`", ",", "0.285445`", ",", 
-   "0.259653`", ",", "0.224564`", ",", "0.177913`", ",", "0.109613`", ",", 
-   "0.0302904`", ",", "0.00209579`", ",", "0.0000296352`", ",", "0"}], 
-  "}"}]], "Output",
- CellChangeTimes->{3.666982936102728*^9}]
+   3.667068552254209*^9}, 3.6672305561115103`*^9, 3.66723129761668*^9, 
+   3.667231407475506*^9, 3.6672314483661957`*^9, {3.6672314925957413`*^9, 
+   3.6672315635563383`*^9}, 3.6672322536358557`*^9, 3.667232449025473*^9, 
+   3.667232511135889*^9, 3.667232604458371*^9, 3.667232658328064*^9, 
+   3.667232711030015*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -181,37 +201,37 @@ Cell[BoxData[
       RowBox[{"HarmonicOscillator\[Psi]", "[", 
        RowBox[{"n", ",", "x", ",", "1", ",", "1", ",", "1"}], "]"}], ",", 
       RowBox[{"{", 
-       RowBox[{"x", ",", 
-        RowBox[{"-", "5"}], ",", "5"}], "}"}]}], "]"}], ",", 
+       RowBox[{"x", ",", "0", ",", "5"}], "}"}]}], "]"}], ",", 
     "\[IndentingNewLine]", 
     RowBox[{"{", 
      RowBox[{"n", ",", "1", ",", "100", ",", "1"}], "}"}]}], "]"}], 
   "\[IndentingNewLine]"}]], "Input",
  CellChangeTimes->{{3.666980792929566*^9, 3.6669808404590473`*^9}, {
   3.6669820097303143`*^9, 3.6669820105931873`*^9}, {3.6669832817209253`*^9, 
-  3.666983281805483*^9}, {3.66698335791858*^9, 3.666983358956773*^9}}],
+  3.666983281805483*^9}, {3.66698335791858*^9, 3.666983358956773*^9}, {
+  3.667231398022427*^9, 3.667231398828063*^9}}],
 
 Cell[BoxData[
  TagBox[
   StyleBox[
-   DynamicModuleBox[{$CellContext`n$$ = 13, Typeset`show$$ = True, 
+   DynamicModuleBox[{$CellContext`n$$ = 1, Typeset`show$$ = True, 
     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
     Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
     "\"untitled\"", Typeset`specs$$ = {{
       Hold[$CellContext`n$$], 1, 100, 1}}, Typeset`size$$ = {
-    360., {109., 114.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
-    Typeset`skipInitDone$$ = True, $CellContext`n$85740$$ = 0}, 
+    360., {109., 113.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n$15481$$ = 0}, 
     DynamicBox[Manipulate`ManipulateBoxes[
      1, StandardForm, "Variables" :> {$CellContext`n$$ = 1}, 
       "ControllerVariables" :> {
-        Hold[$CellContext`n$$, $CellContext`n$85740$$, 0]}, 
+        Hold[$CellContext`n$$, $CellContext`n$15481$$, 0]}, 
       "OtherVariables" :> {
        Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
         Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
         Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
          Typeset`skipInitDone$$}, "Body" :> Plot[
         $CellContext`HarmonicOscillator\[Psi][$CellContext`n$$, \
-$CellContext`x, 1, 1, 1], {$CellContext`x, -5, 5}], 
+$CellContext`x, 1, 1, 1], {$CellContext`x, 0, 5}], 
       "Specifications" :> {{$CellContext`n$$, 1, 100, 1}}, "Options" :> {}, 
       "DefaultOptions" :> {}],
      ImageSizeCache->{405., {153., 158.}},
@@ -227,7 +247,7 @@ $CellContext`x, 1, 1, 1], {$CellContext`x, -5, 5}],
   Manipulate`InterpretManipulate[1]]], "Output",
  CellChangeTimes->{
   3.666980841613462*^9, {3.666982017452655*^9, 3.6669820178347692`*^9}, 
-   3.666983283465617*^9, 3.666983359920082*^9}]
+   3.666983283465617*^9, 3.666983359920082*^9, 3.667231399801236*^9}]
 }, Open  ]]
 },
 WindowSize->{Full, Full},
@@ -247,19 +267,15 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 1241, 32, 80, "Input"],
-Cell[1802, 54, 895, 30, 59, "Input"],
+Cell[558, 20, 1383, 34, 80, "Input"],
+Cell[1944, 56, 895, 30, 59, "Input"],
 Cell[CellGroupData[{
-Cell[2722, 88, 998, 21, 80, "Input"],
-Cell[3723, 111, 1896, 37, 316, "Output"]
+Cell[2864, 90, 2085, 46, 131, "Input"],
+Cell[4952, 138, 2623, 51, 350, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[5656, 153, 153, 3, 28, "Input"],
-Cell[5812, 158, 543, 11, 46, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[6392, 174, 728, 17, 80, "Input"],
-Cell[7123, 193, 1759, 36, 328, "Output"]
+Cell[7612, 194, 753, 17, 80, "Input"],
+Cell[8368, 213, 1779, 36, 328, "Output"]
 }, Open  ]]
 }
 ]

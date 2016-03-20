@@ -185,19 +185,25 @@ namespace function {
     // -- Memory Write          :
     void jacobiRotation (double** A, unsigned int matrixSize, unsigned int i, unsigned int j, float theta) {
         if (i != j) {
-            double s = sin(theta);                                                      // Read = 1; Write = 1;
-            double c = cos(theta);                                                      // Read = 1; Write = 1;
             
-            A[i][i] = (c*c) * A[i][i] - (2.0*s*c) * A[i][j] + (s*s) * A[j][j];            // Mult = 7; Add = 2; Read =
-            A[j][j] = (s*s) * A[i][i] + (2.0*s*c) * A[i][j] + (c*c) * A[j][j];            // Mult = 7; Add = 2
-            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (A[i][i] - A[j][j]);              // Mult = 5; Add = 3
+            double s = sin(theta);
+            double c = cos(theta);
+            
+            double AII = A[i][i];
+            double AJJ = A[j][j];
+            
+            A[i][i] = (c*c) * AII - (2.0*s*c) * A[i][j] + (s*s) * AJJ;            // Mult = 7; Add = 2; Read =
+            A[j][j] = (s*s) * AII + (2.0*s*c) * A[i][j] + (c*c) * AJJ;            // Mult = 7; Add = 2
+            A[i][j] = (c*c - s*s) * A[i][j] + (s*c) * (AII - AJJ);              // Mult = 5; Add = 3
             A[j][i] = A[i][j];
             
+            double AIK;
             for (unsigned int k = 0; k < matrixSize; k++) {   // Number of executions = matrixSize - 2
                 if ((k != i) && (k != j)) {
-                    A[i][k] = c * A[i][k] - s * A[j][k];                                    // Mult = 2; Add = 1;
+                    AIK = A[i][k];
+                    A[i][k] = c * AIK - s * A[j][k];                                    // Mult = 2; Add = 1;
                     A[k][i] = A[i][k];
-                    A[j][k] = s * A[i][k] + c * A[j][k];                                    // Mult = 2; Add = 1;
+                    A[j][k] = s * AIK + c * A[j][k];                                    // Mult = 2; Add = 1;
                     A[k][j] = A[j][k];
                 }
             }
@@ -329,7 +335,7 @@ namespace function {
             }
             outputFile << matrix[matrixSizeM - 1][0];
             for (unsigned int j = 1; j < matrixSizeN; j++) {
-                outputFile << "," << matrix[matrixSizeM - 1][j];
+                outputFile << "\t" << matrix[matrixSizeM - 1][j];
             }
         } else {
             std::cout << "File '" << filename << "' did not open /r";
