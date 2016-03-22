@@ -74,6 +74,34 @@ We performed a Jacobian eigenvalue algorithm to
 
 \section{Analysis}
 
+- for part B, using N = 200 and rhoMax = 5.0 gives the three lowest eigenvalues up to 3 decimal places.
+
+\subsection{Part B}
+
+\begin{table}
+	\centering
+	\begin{tabular}{ r | l || c | c | r | c | c}
+		Size of &           & Householder & Jacobi & Itterations of & Jacobi & Householder \\
+		Matrix  & Tolerance &    Time     &  Time  & Jacobi Method  &   E1   &      E1     \\
+		\hline
+		 100 & 0.1    & 0.01 &  0.15 &  8684 & 3.00030 & 3.22937 \\
+		  "  & 0.01   &  "   &  0.20 & 10667 & 2.99924 &    "    \\
+		  "  & 0.001  &  "   &  0.21 & 12076 & 2.99923 &    "    \\
+		  "  & 0.0001 &  "   &  0.25 & 13200 &    "    &    "    \\
+		 200 & 0.1    & 0.1  &  2.5  & 36836 & 3.00228 & 2.99986 \\
+		  "  & 0.01   &  "   &  2.9  & 44012 & 2.99981 &    "    \\
+		  "  & 0.001  &  "   &  3.2  & 49387 &    "    &    "    \\
+		  "  & 0.0001 &  "   &  3.6  & 53888 &    "    &    "    \\
+		 300 & 0.1    & 0.38 & 12.2  & 85521 & 3.00024 & 3.00000 \\
+		 500 &        & 2.9  &       &       &         & 3.00003 \\
+		 750 &        & 9.7  &       &       &         & 3.00006 \\ 
+		1000 &        & 54.6 &       &       &         & 2.99967 \\
+		
+	\end{tabular}
+	\caption{rhoMax = 5.0}
+\end{table}
+
+
 \section{Conclusions}
 
 \section{Works Cited}

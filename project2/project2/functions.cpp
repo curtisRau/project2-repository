@@ -270,14 +270,14 @@ namespace function {
     void maxOffDiagnalElement (double** A, unsigned int matrixSize, double* value, unsigned int* p, unsigned int* q) {
         *value = 0.0;
         for (unsigned int i = 0; i < matrixSize; i++) {
-            for (unsigned int j = 0; j < matrixSize; j++) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
-                if (j != i) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+            for (unsigned int j = 0; j < i; j++) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
+//                if (j != i) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
                     if ( fabs(A[i][j]) > *value ) {// THE MATRIX IS SYMMETRIC SO WE CAN LOOP OVER JUST THE UPPER OR LOWER HALF.
                         *value = fabs(A[i][j]);
                         *p = i;
                         *q = j;
                     }
-                }
+//                }
             }
         }
     }
@@ -302,13 +302,13 @@ namespace function {
         double* minElemsVec = new double [numOfElem2Return];
         double* XX = new double[numOfElem2Return];
         
-        minElemsVec[0] = vec[0];
-        XX[0]          = vec[0];
+        minElemsVec[0] = fabs(vec[0]);
+        XX[0]          = fabs(vec[0]);
         for (unsigned int i = 0; i < vecSize; i++) {
             for (unsigned int j = 0; j < numOfElem2Return; j++) {
                 
-                if (vec[i] < minElemsVec[j]) {
-                    minElemsVec[j] = vec[i];
+                if (fabs(vec[i]) < minElemsVec[j]) {
+                    minElemsVec[j] = fabs(vec[i]);
                     for (NULL; j < (numOfElem2Return - 1); j++) {
                         minElemsVec[j+1] = XX[j];                           // Shift forward
                         XX[j] = minElemsVec[j];                             // Copy minElemsVec to XX
@@ -358,4 +358,55 @@ namespace function {
         }
         outputFile.close();
     }
+    
+    
+    double vectorDotProduct (double* u, double* v, unsigned int vectorLength) {
+        double sum = 0.0;
+        for (unsigned int i = 0; i < vectorLength; i++) {
+            sum += u[i] * v[i];
+        }
+        return sum;
+    }
+    
+    void transposeMatrix (double** A, unsigned int matrixSize) {
+        double elem;
+        for (unsigned int i = 0; i < matrixSize; i++) {
+            for (unsigned int j = 0; j < i; j++) {
+                elem = A[i][j];
+                A[i][j] = A[j][i];
+                A[j][i] = elem;
+            }
+        }
+    }
+    
+    // Takes u(r) -> u(r)/r
+    void deradializeSolution (double* u, unsigned int vectorLength, double r0, double dr) {
+        for (unsigned int i = 0; i < vectorLength; i++) {
+            u[i] /= r0 + dr * i;
+        }
+    }
+    
+    
+    // Takes ø -> |ø|^2
+    void squareVector (double* v, unsigned int vectorLength) {
+        for (unsigned int i = 0; i < vectorLength; i++) {
+            v[i] *= v[i];
+        }
+    }
+    
+    
+    // Makes |v| = 1
+    void vectorNormalize (double* v, unsigned int vectorLength, double dx) {
+        double sum = 0.0;
+        for (unsigned int i = 0; i < vectorLength; i++) {
+            sum += v[i];
+        }
+        
+        sum *= dx;
+        
+        for (unsigned int i = 0; i < vectorLength; i++) {
+            v[i] /= sum;
+        }
+    }
+    
 }

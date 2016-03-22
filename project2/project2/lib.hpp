@@ -19,7 +19,6 @@ static float sqrarg;
 
 void tqli(double *, double *, int, double **);
 double pythag(double, double);                                          // Required by tqli
-void jacobi(double** a, double* d, double** v, int n, int& nrot);
 
 
 
