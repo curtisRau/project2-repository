@@ -12,11 +12,13 @@
 #include "time.h"
 #include "lib.hpp"
 #include <string>
+#include <limits>           // For determining how many digits should be printed for double
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//const double beta = 1.0;             // beta may not be equal to one.  This is a constant in the equation we are trying to solve.
+typedef std::numeric_limits< double > dbl;
+double pi = 3.141592653589793238;
 
 // This is the potential
 double V (double rho) {
@@ -24,41 +26,39 @@ double V (double rho) {
 }
 
 double Vc (double rho, double omega) {
-    return omega*omega*rho*rho + 1/rho;           // + beta / rho;
+    return omega * omega * rho * rho + 1 / rho;           // + beta / rho;
 }
 
-//// Convert the eigenvalue to energy
-//double eigenvalue2Energy (double eigenvalue) {
-//    double hbar = ;
-//    double omega = ;
-//    return hbar * omega / 2.0;
-//}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, const char * argv[]) {
     
-    unsigned int N      = 200;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
+    std::cout.precision(dbl::max_digits10);
+    
+    unsigned int N      = 500;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
-    double       rhoMax = 5.0;
+    double       rhoMax = 15.0;
     double       h      = (rhoMax - rhoMin) / (N + 1);  // The step length
     double       h2     = h*h;                          // Step Length Squared;
 
     clock_t begin_time;             // Variable for keeping track of computation times.
 
 
+    // Code for part B
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     // Implement the Jacobi Method
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if (false) {
         std::cout << " ----------- Jacobi Method ----------- " << std::endl;
 
-        unsigned int maxRecursion = 50000;          // Maximum number of times "for" loop will run.
-        double       tolerance    = 0.1;         // When all off diagonal matrix elements are < this, the matrix is
+        unsigned int maxRecursion = 100000;          // Maximum number of times "for" loop will run.
+        double       tolerance    = 0.01;            // When all off diagonal matrix elements are < this, the matrix is
                                                     // considered diagonalized.
-
-        begin_time = clock();                       // Start the clock.
 
         // Generate the A matrix which the Jacobi Method will diagonalize
         double* a = function::generateConstantVector(N-1, -1.0/h2);
@@ -88,12 +88,20 @@ int main(int argc, const char * argv[]) {
         double* maxValue = &z;
         unsigned int numberOfItterations = 0;
         
+        begin_time = clock();                       // Start the clock.
+        
         function::maxOffDiagnalElement(A, N, maxValue, p, q);
         for (unsigned int* i = &numberOfItterations; (*i < maxRecursion) && (*maxValue > tolerance); *i += 1) {
             function::maxOffDiagnalElement(A, N, maxValue, p, q);
             theta = atan(
                          (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                          ) / 2.0;
+            
+            // Unit Test
+            if (fabs(theta) > pi / 4.0) {
+                std::cout << "!! -- Jacobi Method Error: theta outside expected range -- !!" << std::endl;
+            }
+            
             function::jacobiRotation(A, N, *p, *q, theta);
         }
         
@@ -117,8 +125,6 @@ int main(int argc, const char * argv[]) {
     if (false) {
         std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
 
-        begin_time = clock();                                   // Start the clock.
-
         //make identity matrix for tqli
         double* ones  = function::generateConstantVector(N, 1);
         double* zeros = function::generateConstantVector(N-1, 0);
@@ -135,10 +141,10 @@ int main(int argc, const char * argv[]) {
             b[i] = (2.0 / h2) + V(rhoMin + (i+1)*h);
         }
 
+        begin_time = clock();                                   // Start the clock.
+        
         tqli(b,a,N,I); // householder method
-
-        delete [] a;    // "a" no longer needed.
-        std::cout.precision(17);
+        
         std::cout << "Total computation time [s] = "                 << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
         std::cout << "Smallest eigenvalue (should be 3) = \t\t"      << function::minVectorElements(b, N, 3)[0]          << std::endl;
         std::cout << "Second smallest eigenvalue (should be 7) = \t" << function::minVectorElements(b, N, 3)[1]          << std::endl;
@@ -151,6 +157,7 @@ int main(int argc, const char * argv[]) {
         }
 
         // Deallocate Memory
+        delete [] a;    // "a" no longer needed.
         delete [] b;
         for (unsigned int i = 0; i<N; i++) {
             delete [] I[i];
@@ -167,10 +174,10 @@ int main(int argc, const char * argv[]) {
         std::cout << "-- Begin Part C --" << std::endl;
         
         double* omega = new double [4];
-        omega[0]=.01;
-        omega[1]=0.5;
-        omega[2]=1;
-        omega[3]=5;
+        omega[0] = 1.0 / 4.0;
+        omega[1] = 0.5;
+        omega[2] = 1;
+        omega[3] = 5;
 
     for (int r = 0; r < 4; r++) {
     std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
@@ -221,6 +228,12 @@ int main(int argc, const char * argv[]) {
                 theta = atan(
                              (2.0 * A[*p][*q]) / (A[*q][*q] - A[*p][*p])
                              ) / 2.0;
+                
+                // Unit Test
+                if (fabs(theta) > pi / 4.0) {
+                    std::cout << "!! -- Jacobi Method Error: theta outside expected range -- !!" << std::endl;
+                }
+                
                 function::jacobiRotation(A, N, *p, *q, theta);
             }
 
@@ -247,11 +260,7 @@ int main(int argc, const char * argv[]) {
     if (true) {
         std::cout << "-- Begin Part D --" << std::endl;
         
-        double* omega = new double [4];
-        omega[0]=.01;
-        omega[1]=0.5;
-        omega[2]=1;
-        omega[3]=5;
+        double omega = 0.01;
         
         begin_time = clock();                                   // Start the clock.
         
@@ -268,13 +277,22 @@ int main(int argc, const char * argv[]) {
         
         double* b = new double [N];
         for (int i = 0; i < N; i++) {
-            b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h, 10);
+            b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h, omega);
         }
         
         tqli(b,a,N,I); // householder method
         
         delete [] a;    // "a" no longer needed.
-        std::cout.precision(17);
+        
+        // This transforms our solution into the "true" solution (better explanation?)
+        function::transposeMatrix(I, N);
+        for (unsigned int i = 0; i < N; i++) {
+            function::deradializeSolution(I[i], N, rhoMin + h, h);
+            function::squareVector(I[i], N);
+            function::vectorNormalize(I[i], N);
+        }
+        
+        
         std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
         std::cout << "Smallest eigenvalue        = " << function::minVectorElements(b, N, 3)[0]          << std::endl;
         std::cout << "Second smallest eigenvalue = " << function::minVectorElements(b, N, 3)[1]          << std::endl;
@@ -294,69 +312,69 @@ int main(int argc, const char * argv[]) {
         delete [] I;
     }
 
- //part d
-    if (true){
-        double* omega = new double [4];
-        omega[0]=.01;
-        omega[1]=0.5;
-        omega[2]=1;
-        omega[3]=5;
-        int count = 1;
-    for (int r = 0; r < 4; r++) {
-        count++;
-        std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
+// //part d
+//    if (true){
+//        double* omega = new double [4];
+//        omega[0]=.01;
+//        omega[1]=0.5;
+//        omega[2]=1;
+//        omega[3]=5;
+//        int count = 1;
+//    for (int r = 0; r < 4; r++) {
+//        count++;
+//        std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
+//
+//            std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
+//
+//            begin_time = clock();                                   // Start the clock.
+//
+//            //make identity matrix for tqli
+//            double* ones  = function::generateConstantVector(N, 1);
+//            double* zeros = function::generateConstantVector(N-1, 0);
+//            double** I    = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
+//
+//            // "ones" and "zeros" no longer needed.
+//            delete [] ones;
+//            delete [] zeros;
+//
+//            double* a = function::generateConstantVector(N-1, -1.0/h2);
+//
+//            double* b = new double [N];
+//            for (int i = 0; i < N; i++) {
+//                b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h,omega[r]);
+//            }
+//
+//            tqli(b,a,N,I); // householder method
+//
+//            delete [] a;    // "a" no longer needed.
+//
+//            std::cout << "Total computation time [s] = "                 << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
+//            std::cout << "Smallest eigenvalue (should be 3) = \t\t"      << function::minVectorElements(b, N, 3)[0]          << std::endl;
+//            std::cout << "Second smallest eigenvalue (should be 7) = \t" << function::minVectorElements(b, N, 3)[1]          << std::endl;
+//            std::cout << "Third smallest eigenvalue (should be 11) = \t" << function::minVectorElements(b, N, 3)[2]          << std::endl;
+//
+//            //function::printVector(I[1], N);
+//            //function::plotVector(I[1], 0, 1000, 20, 10000);
+//
+//            // Save output
+//            if (true) {
+//                std::string r_str = std::to_string(count);
+//                std::string matrixname = "matrix" + r_str + ".txt";
+//                std::string arrayname = "array" + r_str + ".txt";
+//                function::saveMatrix4Mathematica(matrixname, I, N, N);
+//                function::saveArray4Mathematica(arrayname, b, N);
+//            }
+//
+//            // Deallocate Memory
+//            delete [] b;
+//            for (unsigned int i = 0; i<N; i++) {
+//                delete [] I[i];
+//            }
+//            delete [] I;
+//
+//        }
 
-            std::cout << " ----------- Householder Algorithm ----------- " << std::endl;
 
-            begin_time = clock();                                   // Start the clock.
-
-            //make identity matrix for tqli
-            double* ones  = function::generateConstantVector(N, 1);
-            double* zeros = function::generateConstantVector(N-1, 0);
-            double** I    = function::genTridiagMatVectArgsExact(N, zeros, ones, zeros);
-
-            // "ones" and "zeros" no longer needed.
-            delete [] ones;
-            delete [] zeros;
-
-            double* a = function::generateConstantVector(N-1, -1.0/h2);
-
-            double* b = new double [N];
-            for (int i = 0; i < N; i++) {
-                b[i] = (2.0 / h2) + Vc(rhoMin + (i+1)*h,omega[r]);
-            }
-
-            tqli(b,a,N,I); // householder method
-
-            delete [] a;    // "a" no longer needed.
-            std::cout.precision(17);
-            std::cout << "Total computation time [s] = "                 << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
-            std::cout << "Smallest eigenvalue (should be 3) = \t\t"      << function::minVectorElements(b, N, 3)[0]          << std::endl;
-            std::cout << "Second smallest eigenvalue (should be 7) = \t" << function::minVectorElements(b, N, 3)[1]          << std::endl;
-            std::cout << "Third smallest eigenvalue (should be 11) = \t" << function::minVectorElements(b, N, 3)[2]          << std::endl;
-
-            //function::printVector(I[1], N);
-            //function::plotVector(I[1], 0, 1000, 20, 10000);
-
-            // Save output
-            if (true) {
-                std::string r_str = std::to_string(count);
-                std::string matrixname = "matrix" + r_str + ".txt";
-                std::string arrayname = "array" + r_str + ".txt";
-                function::saveMatrix4Mathematica(matrixname, I, N, N);
-                function::saveArray4Mathematica(arrayname, b, N);
-            }
-
-            // Deallocate Memory
-            delete [] b;
-            for (unsigned int i = 0; i<N; i++) {
-                delete [] I[i];
-            }
-            delete [] I;
-
-        }
-
-
-    }//end of part d
+//    }//end of part d
     return 0;
 }
