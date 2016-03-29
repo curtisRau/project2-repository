@@ -70,7 +70,103 @@ Dot product between vectors is conserved
 
 \section{Methods}
 
-We performed a Jacobian eigenvalue algorithm to 
+We discretize the equation as follows, where b and a are the end points of our model using N internal points. (There are N+2 total including end points)
+
+\begin{equation}
+\begin{aligned}
+u(\rho) \to u(\rho_i) = u_i \\
+\rho \to \rho_i = \rho_0 + i h \\
+h = \frac{b-a}{n+1} \\
+a = 0
+\end{aligned}
+\end{equation}
+
+And use the following expression as an approximation of the second derivative:
+
+$$u''=\frac{u(\rho+h)-2u(\rho)+u(\rho-h)}{h^2}$$
+
+We can approximate the Schr\"odinger equation as 
+
+$$\frac{u_{i+1}-2u_i+u_{i-1}}{h^2}+V_iu_i=\lambda u(\rho_i)$$
+
+In terms of matrices, we have
+
+\begin{equation}
+\left( \begin{array}{cccc}
+\frac{2}{h^2} + V_1 &    -\frac{1}{h^2}   &                &   0 \\
+-\frac{1}{h^2}       & \frac{2}{h^2} + V_2 & -\frac{1}{h^2} &   \\
+&                     &     \ddots     &                        \\
+&                     &                &    -\frac{1}{h^2}      \\
+0&                     & -\frac{1}{h^2} & \frac{2}{h^2} + V_{N-1}
+\end{array} \right)
+\left( \begin{array}{cccc}
+u_1\\
+u_2\\
+\dots\\
+\\
+\\
+u_{N}\\
+\end{array} \right)
+=\lambda
+\left( \begin{array}{cccc}
+u_1\\
+u_2\\
+\dots\\
+\\
+\\
+u_{N}\\
+\end{array} \right)
+\end{equation}
+We will call the NxN matrix $\hat{A}$. We will perform a Jacobi rotation on this matrix, represented by multiplying both sides by $S_{ij}^T$, which as an identity matrix except with $c=cos\theta$ in positions $i,i$ and $j,j$, $s=sin\theta$ at position $i,j$, and $-s$ at position $j,i$ for some angle $\theta$.
+
+\begin{equation}
+S_{ij}^T = 
+\left( \begin{array}{ccccccc}
+1 &       &       &       &       &     &        0 \\
+	 &\ddots &     &       &       &     &              \\
+	 &       &  c    & \dots&  s    &     &              \\
+	 &       &\vdots &       & \vdots&     &              \\
+	 &       &   -s  & \dots &   c   &     &              \\
+	 &       &       &       &       &\ddots&             \\
+0 &       &       &       &       &     &   1  \\
+\end{array} \right)
+\end{equation} 
+
+
+Note that:
+\begin{itemize}  
+\item Eigenvalues unchanged under orthogonal transforms such as a Jacobi rotation.
+\item Eigenvectors change, but the length is preserved.
+\item Dot product between vectors is conserved
+\end{itemize}
+
+\begin{eqnarray}
+\hat{A} x = \lambda x \\
+S^T A x = \lambda S^T x \\
+S^T A S (S^T x) = \lambda (S^T x)
+\end{eqnarray}
+
+The values in the new matrix $\hat{A'}=S_{ij}^T\hat{A}$ can be found with the following relations, where $s=sin\theta$ and $c=cos\theta$ for some $\theta$:
+
+\begin{eqnarray}
+\hat{A'}_{ii} = c^2\hat{A}_{ii} - 2sc\hat{A}_{ij} + s^2\hat{A}_{jj} \\
+\hat{A'}_{jj} = s^2\hat{A}_{ii} + 2sc\hat{A}_{ij} + c^2\hat{A}_{jj} \\
+\hat{A'}_{ij} = \hat{A'}_{ji} = (c^2 - s^2)\hat{A}_{ij} + sc(\hat{A}_{ii} - \hat{A'}_{jj} )  \\
+\hat{A'}_{ik} = \hat{A'}_{ki} = c\hat{A}_{ik} - s\hat{A}_{jk}, k\not= i,j \\
+\hat{A'}_{jk} = \hat{A'}_{kj} = s\hat{A}_{ik} - c\hat{A}_{jk}, k\not= i,j \\
+\hat{A'}_{kl} = \hat{A}_{kl} ,  k,l\not= i, 
+\end{eqnarray}
+
+
+
+We performed a Jacobian eigenvalue algorithm on this matrix to find the approximate eigenvalues. If we minimize all of the off-diagonal elements with orthogonal transforms, which preserve eigenvalues, then the remaining diagonal gives us the approximate eigenvalues of the matrix. A Jacobi rotation is one such orthogonal transform.
+
+In our method, we first identify the largest off-diagonal element $A_{i,j}$ to use as the "pivot" in the Jacobi Rotation. So, we find the angle of rotation such that $A_{i,j}$ becomes zero. We perform a Jacobi rotation of that angle on $\hat{A}$ and call the rotated matrix our new $\hat{A}$.
+
+ We repeat this process until either the largest off-diagonal element has absolute value less than a certain tolerance, 0.01, or until a maximum number of iterations is reached.
+
+After many iterations, the off diagonal elements are minimized while the diagonals elements approach eigenvalues. 
+
 
 \section{Analysis}
 
