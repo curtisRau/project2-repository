@@ -18,7 +18,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 typedef std::numeric_limits< double > dbl;
-double pi = 3.141592653589793238;
 
 // This is the potential
 double V (double rho) {
@@ -98,7 +97,7 @@ int main(int argc, const char * argv[]) {
                          ) / 2.0;
             
             // Unit Test
-            if (fabs(theta) > pi / 4.0) {
+            if (fabs(theta) > M_PI_4) {
                 std::cout << "!! -- Jacobi Method Error: theta outside expected range -- !!" << std::endl;
             }
             
@@ -230,7 +229,7 @@ int main(int argc, const char * argv[]) {
                              ) / 2.0;
                 
                 // Unit Test
-                if (fabs(theta) > pi / 4.0) {
+                if (fabs(theta) > M_PI_4) {
                     std::cout << "!! -- Jacobi Method Error: theta outside expected range -- !!" << std::endl;
                 }
                 
