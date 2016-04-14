@@ -179,7 +179,7 @@ int main(int argc, const char * argv[]) {
         omega[3] = 5;
 
     for (int r = 0; r < 4; r++) {
-    std::cout<<"-----------------\nOmega = "<<omega[r]<<std::endl;
+    std::cout << "-----------------\nOmega = " << omega[r] << std::endl;
 
         // Implement the Jacobi Method
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -259,7 +259,7 @@ int main(int argc, const char * argv[]) {
     if (true) {
         std::cout << "-- Begin Part D --" << std::endl;
         
-        double omega = 0.01;
+        double omega = 0.1;
         
         begin_time = clock();                                   // Start the clock.
         

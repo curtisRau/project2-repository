@@ -1,42 +1,68 @@
-\documentclass{article}
+\documentclass[twocolumn, groupedaddress]{revtex4-1}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}											% Use pdf, png, jpg, or epsÂ§ with pdflatex; use eps in DVI
 \usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+\usepackage{float}												% for controlling the position of objects ie. tables
+
+\usepackage{breqn}
+
+\usepackage[small, bf]{caption}									%Adjust caption size of figures, tables, pictures...
+\setlength{\captionmargin}{15pt}
+										
+\graphicspath{{images/}}											% folder where images are stored in current directory
+
+% --------------------------- Code for placing two figure side by side ------------------------------------------------------------------
+\usepackage{caption}
+\usepackage{subcaption}
 
 % --------------------------- Code for the bibliography ---------------------------------------------------------------------------------
 \usepackage{natbib}												% For fancy in-text citations
 \bibliographystyle{plain}
 
-\usepackage{amsmath}
-\begin{document}
-	\title{MTH 480 Project 2}
-	\author{Curtis Rau, Benjamin Brophy}
-	\maketitle
 
-\section{Abstract}
+
+\begin{document}
+
+\author{Curtis Rau}
+\author{Benjamin Brophy}
+\affiliation{Michigan State University}
+\title{Computational Physics Project 2}
+
+\begin{abstract}
+In this project we saught to solve the Schr\"{o}dinger Equation for two interacting electrons in a cylindrically symmetric harmonic oscillator potential.  Potentials of this form are useful for simulating quantum dots.  Of particular interest are the low lying energy levels for this system which only have known analytical solutions for a few special cases \cite{taut}.  This paper gives an overview of the process of boiling down the Schrodinger equation to an ealily solvable one dimentional differential equation.  Then the method of discretizing the differential equation, and translating it into a matrix equation is discussed.  The Jacobi Method is introduced as the way in which the eigenvalues were obtained.  The Householder Algorithm was used to check the results from Jacobi's Method and both methods were in excellent agreement.
+\end{abstract}
+
+\maketitle
+
 
 \section{Introduction}
 
 In this project we aim to solve Schr\"{o}dinger's equation for two electrons in a three dimensional harmonic oscillator well with and without a repulsive Coulomb interaction, assuming that the move in a three dimensional harmonic oscillator potential. Here we have the Schr\"odinger for two electrons at $r_1$ and $r_2$ in such a potential
 
-$$\left(-\frac{\hbar^2}{2m}\bigtriangledown_1^2
-		-\frac{\hbar^2}{2m}\bigtriangledown_2^2
-		+\frac{1}{2}m\omega^2r_1^2
-		+\frac{1}{2}m\omega^2r_2^2
-		+\frac{ke^2}{|r_1^2-r_2^2|}
-		\right)
+\begin{align}
+[- \frac{\hbar^2}{2m} \left( \nabla_1^2 + \nabla_2^2 \right)				\nonumber
+		+ \frac{1}{2}m\omega^2 \left( r_1^2 + r_2^2 \right)				\\
+		+ \frac{ke^2}{|r_1^2-r_2^2|}
+		]
 		\psi (r_1,r_2)  = E \psi (r_1,r_2)
-		$$
+\end{align}
+
 
 The Schr\"{o}dinger equation can be transformed to the radial equation in center of mass frame, where r represents the distance between electrons, and R is the position of the center of mass.
 
-\begin{equation}
-	\left[ \left( = \frac{\hbar^2}{m} \frac{1}{r^2} \partial_r r^2 \partial_r + \frac{1}{4} m \omega^2 r^2 + \frac{k e^2}{r} \right) + \left( - \frac{\hbar^2}{4m} \frac{1}{R^2} \partial_R R^2 \partial_R + m\omega^2 R^2 + \frac{\hbar l(l+1)}{R^2} \right) \right] \psi (r) \theta (R)  = (E_r + E_R) \psi (r) \theta (R)
-\end{equation}
+\begin{align}
+  [ \left( - \frac{\hbar^2}{m} \frac{1}{r^2} \partial_r r^2 \partial_r + \frac{1}{4} m \omega^2 r^2 + \frac{k e^2}{r} \right) 	\nonumber \\
++ \left( - \frac{\hbar^2}{4m} \frac{1}{R^2} \partial_R R^2 \partial_R + m\omega^2 R^2 + \frac{\hbar l(l+1)}{R^2} \right) ]		\nonumber \\
+ \psi (r) \theta (R) = (E_r + E_R) \psi (r) \theta (R)
+\end{align}
 
 We are only interested in the radial solution
 
 \begin{equation}
-\left( = \frac{\hbar^2}{m} \frac{1}{r^2} \partial_r r^2 \partial_r + \frac{1}{4} m \omega^2 r^2 + \frac{k e^2}{r} \right) \psi (r)  = E_r \psi (r)
+\left( - \frac{\hbar^2}{m} \frac{1}{r^2} \partial_r r^2 \partial_r + \frac{1}{4} m \omega^2 r^2 + \frac{k e^2}{r} \right) \psi (r)  = E_r \psi (r)
 \end{equation}
 
 We can make the equation dimensionless which gives
@@ -69,32 +95,33 @@ $$\frac{u_{i+1}-2u_i+u_{i-1}}{h^2}+V_iu_i=\lambda u(\rho_i)$$
 
 In terms of matrices, we have
 
-\begin{equation}
+\begin{align}
 \left( \begin{array}{cccc}
-\frac{2}{h^2} + V_1 &    -\frac{1}{h^2}   &                &   0 \\
--\frac{1}{h^2}       & \frac{2}{h^2} + V_2 & -\frac{1}{h^2} &   \\
-&                     &     \ddots     &                        \\
-&                     &                &    -\frac{1}{h^2}      \\
-0&                     & -\frac{1}{h^2} & \frac{2}{h^2} + V_{N-1}
+\frac{2}{h^2} + V_1  &    -\frac{1}{h^2}   &                &            0            \\
+   -\frac{1}{h^2}    & \frac{2}{h^2} + V_2 & -\frac{1}{h^2} &                         \\
+                     &                     &     \ddots     &                         \\
+                     &                     &                &     -\frac{1}{h^2}      \\
+         0           &                     & -\frac{1}{h^2} & \frac{2}{h^2} + V_{N-1}
 \end{array} \right)
 \left( \begin{array}{cccc}
-u_1\\
-u_2\\
-\dots\\
-\\
-\\
-u_{N}\\
-\end{array} \right)
-=\lambda
+ u_1  \\
+ u_2  \\
+\dots \\
+      \\
+      \\
+u_{N} \\
+\end{array} \right)									\nonumber \\
+ = \lambda
 \left( \begin{array}{cccc}
-u_1\\
-u_2\\
-\dots\\
-\\
-\\
-u_{N}\\
+ u_1  \\
+ u_2  \\
+\dots \\
+      \\
+      \\
+u_{N} \\
 \end{array} \right)
-\end{equation}
+\end{align}
+
 We will call the NxN matrix $\hat{A}$. We will perform a Jacobi rotation on this matrix, represented by multiplying both sides by $S_{ij}^T$, which as an identity matrix except with $c=cos\theta$ in positions $i,i$ and $j,j$, $s=sin\theta$ at position $i,j$, and $-s$ at position $j,i$ for some angle $\theta$.
 
 \begin{equation}
@@ -152,7 +179,7 @@ After many iterations, the off diagonal elements are minimized while the diagona
 
 \subsection{Part B}
 
-\begin{table}
+\begin{table*}[t]
 	\centering
 	\begin{tabular}{ r | l || c | c | r | c | c}
 		Size of &           & Householder & Jacobi & Itterations of & Jacobi & Householder \\
@@ -172,14 +199,12 @@ After many iterations, the off diagonal elements are minimized while the diagona
 		1000 &        & 54.6 &       &       &         & 2.99967 \\
 		
 	\end{tabular}
-	\caption{rhoMax = 5.0}
-\end{table}
+	\caption{rhoMax = 5.0 \label{table:relults}}
+\end{table*}
 
 
 \section{Conclusions}
 
-\section{Works Cited}
-
-
+\bibliography{project2Paper}
 
 \end{document}
