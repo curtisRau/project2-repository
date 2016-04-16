@@ -295,7 +295,31 @@ namespace function {
         return min;
     }
     
-    
+    // A function that returns the s3 smallest eigenvalues
+    double* threeMinDiagonalElements (double** A, unsigned int matrixSize) {
+        double min1 = A[0][0];
+        double min2 = A[0][0];
+        double min3 = A[0][0];
+        for (unsigned int i = 1; i < matrixSize; i++) {
+            if (fabs(A[i][i]) < min1) {
+                min3 = min2;
+                min2 = min1;
+                min1 = fabs(A[i][i]);
+            }
+            else if  (fabs(A[i][i]) < min2) {
+                min3 = min2;
+                min2 = fabs(A[i][i]);
+            }
+            else if  (fabs(A[i][i]) < min3) {
+                min3 = fabs(A[i][i]);
+            }
+        }
+        double* min = new double[3];
+        min[0]=min1;
+        min[1]=min2;
+        min[2]=min3;
+        return min;
+    }
     // A function to returen the "numOfElem2Return" smallest values from a one dimentional
     // array "vec" of size "vecSize".
     double* minVectorElements (double* vec, unsigned int vecSize, unsigned int numOfElem2Return) {
