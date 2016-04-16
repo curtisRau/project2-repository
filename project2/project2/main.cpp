@@ -5,6 +5,7 @@
 //  Created by Curtis Rau on 3/4/16.
 //  Copyright © 2016 Curtis Rau. All rights reserved.
 //
+#define _USE_MATH_DEFINES
 
 #include <iostream>
 #include "functions.hpp"
@@ -107,7 +108,9 @@ int main(int argc, const char * argv[]) {
         std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
         std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
         std::cout << "Lagrest Off Diagonal Element = " << *maxValue << std::endl;
-        std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
+        std::cout << "Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[0] << std::endl;
+        std::cout << "2nd Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[1] << std::endl;
+        std::cout << "3rd Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[2] << std::endl;
 
         // Deallocate memory for "A" matrix.
         for (unsigned int i = 0; i<N; i++) {
@@ -239,7 +242,9 @@ int main(int argc, const char * argv[]) {
             std::cout << "Total computation time [s] = " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
             std::cout << "Number of itterations performed = " << numberOfItterations << std::endl;
             std::cout << "Lagrest Off Diagonal Element = " << *maxValue << std::endl;
-            std::cout << "Smallest eigenvalue = " << function::minDiagonalElement(A, N) << std::endl;
+        std::cout << "Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[0] << std::endl;
+        std::cout << "2nd Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[1] << std::endl;
+        std::cout << "3rd Smallest eigenvalue = " << function::threeMinDiagonalElements(A, N)[2] << std::endl;
 
             // Deallocate memory for "A" matrix.
             for (unsigned int i = 0; i < N; i++) {
