@@ -176,34 +176,38 @@ After many iterations, the off diagonal elements are minimized while the diagona
 
 
 \section{Analysis}
-
-- for part B, using N = 200 and rhoMax = 5.0 gives the three lowest eigenvalues up to 3 decimal places.
-
-\subsection{Part B}
-
-\begin{table*}[t]
-	\centering
-	\begin{tabular}{ r | l || c | c | r | c | c}
-		Size of &           & Householder & Jacobi & Itterations of & Jacobi & Householder \\
-		Matrix  & Tolerance &    Time     &  Time  & Jacobi Method  &   E1   &      E1     \\
-		\hline
-		 100 & 0.1    & 0.01 &  0.15 &  8684 & 3.00030 & 3.22937 \\
-		  "  & 0.01   &  "   &  0.20 & 10667 & 2.99924 &    "    \\
-		  "  & 0.001  &  "   &  0.21 & 12076 & 2.99923 &    "    \\
-		  "  & 0.0001 &  "   &  0.25 & 13200 &    "    &    "    \\
-		 200 & 0.1    & 0.1  &  2.5  & 36836 & 3.00228 & 2.99986 \\
-		  "  & 0.01   &  "   &  2.9  & 44012 & 2.99981 &    "    \\
-		  "  & 0.001  &  "   &  3.2  & 49387 &    "    &    "    \\
-		  "  & 0.0001 &  "   &  3.6  & 53888 &    "    &    "    \\
-		 300 & 0.1    & 0.38 & 12.2  & 85521 & 3.00024 & 3.00000 \\
-		 500 &        & 2.9  &       &       &         & 3.00003 \\
-		 750 &        & 9.7  &       &       &         & 3.00006 \\ 
-		1000 &        & 54.6 &       &       &         & 2.99967 \\
-		
-	\end{tabular}
-	\caption{rhoMax = 5.0 \label{table:relults}}
-\end{table*}
-
+	
+	Our first goal is to find the three lowest eigenstates for the case with no electrostatic potential to four leading digits. We have a few ways to go about this, as seen in the following table. In the case of the Householder method, our answer only depends on how much we discretize our matrix, or what value of N we choose. In this case we need N = 300 in order to obtain the lowest 3 eigenvalues to 4 leading digits. This takes .25 seconds to calculate. 
+	In our crafted Jacobian method, the answer depends on both N and our tolerance. As described in our methods, we applied a special Jacobian rotation until the off diagonal elements our reduced below a certain tolerance. In the case of N=100, although the Householder method will not be accurate to 4 digits, we can obtain four leading correct digits with a tolerance of 0.001.This only takes 0.25 seconds and 13200 iterations to calculate.
+	In the case of N=200, we can obtain four leading correct digits with a tolerance of 0.01. This only takes 2.9 seconds and 44012 iterations to calculate.
+	In the case N=300, even though with a high tolerance of 0.1 gives us the eigenvalues within 4 leading digits, this brute force method takes 12.2 seconds compared to the .25 seconds for the Householder method.
+	The number of iterations increases about as the square of N.
+	
+	
+	\begin{table*}[t]
+		\centering
+		\begin{tabular}{ r | l || c | c | r | c | c | c | c | c | c|}
+			Size of &           & Householder & Jacobi & Iterations of & Jacobi & Householder & Jacobi & Householder & Jacobi & Householder \\
+			Matrix  & Tolerance &    Time     &  Time  & Jacobi Method  &   E1   &      E1 &   E2   &      E2 &   E3   &      E3     \\
+			\hline
+			100 & 0.1    & 0.01 &  0.15 &  8684 & 3.00030 & 3.22937 &  6.96709 & 6.96536 & 10.91676 & 10.91526 \\
+			"  & 0.01   &  "   &  0.20 & 10667 & 2.99924 &    "    &  6.96537 & " & 10.91526 & "\\
+			"  & 0.001  &  "   &  0.21 & 12076 & 2.99923 &    "    & 6.96536 & " & 10.91526 &\\
+			"  & 0.0001 &  "   &  0.25 & 13200 &    "    &    "   &   &  &  & \\
+			200 & 0.1    & 0.1  &  2.5  & 36836 & 3.00228 & 2.99986 &   &  &  &\\
+			"  & 0.01   &  "   &  2.9  & 44012 & 2.99981 &    "    &   &  &  &\\
+			"  & 0.001  &  "   &  3.2  & 49387 &    "    &    "    &   &  &  &\\
+			"  & 0.0001 &  "   &  3.6  & 53888 &    "    &    "    &   &  &  &\\
+			300 & 0.1    & 0.38 & 12.2  & 85521 & 3.00024 & 3.00000 &   &  &  &\\
+			500 &        & 2.9  &       &       &         & 3.00003&   &  &  & \\
+			750 &        & 9.7  &       &       &         & 3.00006 &   &  &  &\\ 
+			1000 &        & 54.6 &       &       &         & 2.99967 &   &  &  &\\
+			\hline
+			 & & & & Expected Value: & 3 & 3 & 7 & 7 & 11 & 11 &
+			
+		\end{tabular}
+		\caption{rhoMax = 5.0 \label{table:relults}}
+	\end{table*}
 
 \section{Conclusions}
 
