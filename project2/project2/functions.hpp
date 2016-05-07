@@ -40,6 +40,8 @@ namespace function {
     double   vectorDotProduct (double* u, double* v, unsigned int vectorLength);
     void     transposeMatrix (double** A, unsigned int matrixSize);
     
+    void     reorderSolution     (double** eigenvectors, double* eigenvalues, unsigned int numberOfEigenvalues);
+    
     void     deradializeSolution (double* u, unsigned int vectorLength, double r0, double dr);
     void     squareVector        (double* v, unsigned int vectorLength);
     void     vectorNormalize     (double* v, unsigned int vectorLength, double dx = 1.0);

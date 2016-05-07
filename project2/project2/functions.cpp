@@ -9,7 +9,9 @@
 #include "functions.hpp"
 #include <iostream>         // For std::cout
 #include "math.h"           // For sqrt function.
-#include <fstream>              // for working with files.
+#include <fstream>          // for working with files.
+
+using namespace std;
 
 namespace function {
     
@@ -320,6 +322,7 @@ namespace function {
         min[2]=min3;
         return min;
     }
+    
     // A function to returen the "numOfElem2Return" smallest values from a one dimentional
     // array "vec" of size "vecSize".
     double* minVectorElements (double* vec, unsigned int vecSize, unsigned int numOfElem2Return) {
@@ -392,7 +395,8 @@ namespace function {
         return sum;
     }
     
-    // This is for a symmetric Matrix only!
+    
+    // Only for square matricies
     void transposeMatrix (double** A, unsigned int matrixSize) {
         double elem;
         for (unsigned int i = 0; i < matrixSize; i++) {
@@ -402,6 +406,58 @@ namespace function {
                 A[j][i] = elem;
             }
         }
+    }
+    
+    
+    // Curtis's
+    // Takes the set of eigenvectors and reorders them so that
+    // they are in order of increasing eigenvalues.
+    void reorderSolution (double** eigenvectors, double* eigenvalues, unsigned int numberOfEigenvalues) {
+        
+        // Allocate memory for reordered solution:
+        double** reorderedVecs = new double* [numberOfEigenvalues];
+        for (unsigned int i = 0; i < numberOfEigenvalues; i++) {
+            reorderedVecs[i] = new double [numberOfEigenvalues];
+        }
+        
+        double* reorderedVals = new double [numberOfEigenvalues];
+        
+        unsigned int  index = 0;
+        double       oldMin = 0.0;
+        double       newMin;
+        
+        for (unsigned int i = 0; i < numberOfEigenvalues; i++) {
+            // Find the smallest eigenvalue and its index that haven't
+            // already been reordered.
+            newMin = INFINITY;
+            for (unsigned int j = 0; j < numberOfEigenvalues; j++) {
+                if (eigenvalues[j] < newMin && eigenvalues[j] > oldMin) {      // What about the case of degeneracy???????????
+                    newMin = eigenvalues[j];
+                    index = j;
+                }
+            }
+            cout << "The index of the reordering is = " << index << endl;
+            cout << "The eigenvalue here is = " << eigenvalues[index] << endl;
+            oldMin = newMin;
+            reorderedVecs[i] = eigenvectors[index];
+            reorderedVals[i] = eigenvalues[index];
+        }
+        
+        for (unsigned int i = 0; i < numberOfEigenvalues; i++) {
+            for (unsigned int j = 0; j < numberOfEigenvalues; j++) {
+                eigenvectors[i][j] = reorderedVecs[i][j];
+            }
+        }
+        
+        for (unsigned int i = 0; i < numberOfEigenvalues; i++) {
+            eigenvalues[i] = reorderedVals[i];
+        }
+        
+//        // Deallocate Memory:
+//        for (unsigned int i = 0; i < numberOfEigenvalues; i++) {
+//            delete [] reordered[i];
+//        }
+//        delete [] reordered;
     }
     
     // Takes u(r) -> u(r)/r

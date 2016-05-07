@@ -58,8 +58,8 @@ void jacobi_rot(double** a, double s, double tau, int i, int j, int k, int l)
 
 void tqli(double *d, double *e, int n, double **z)
 {
-    register int   m,l,iter,i,k;
-    double         s,r,p,g,f,dd,c,b;
+    int    m,l,iter,i,k;
+    double s,r,p,g,f,dd,c,b;
     
     for(i = 1; i < n; i++)
         e[i-1] = e[i];
