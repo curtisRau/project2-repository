@@ -36,8 +36,11 @@ double Vc (double rho, double omega) {
 int main(int argc, const char * argv[]) {
     
 <<<<<<< HEAD
+<<<<<<< HEAD
     std::cout.precision(dbl::max_digits10);
 =======
+=======
+>>>>>>> Ben
     unsigned int N    = 10;
     //double       rho0 = 0.00000000000000001;        // The starting position, probably 0.0, but 1/0 encountered.
     double       h    = 1;                  // The step length
