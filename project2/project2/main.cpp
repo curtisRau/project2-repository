@@ -35,7 +35,14 @@ double Vc (double rho, double omega) {
 
 int main(int argc, const char * argv[]) {
     
+<<<<<<< HEAD
     std::cout.precision(dbl::max_digits10);
+=======
+    unsigned int N    = 10;
+    //double       rho0 = 0.00000000000000001;        // The starting position, probably 0.0, but 1/0 encountered.
+    double       h    = 1;                  // The step length
+    double       h2   = h*h;                // Step Length Squared;
+>>>>>>> Ben
     
     unsigned int N      = 500;                           // The Matrix Size.  Nstep = N + 1.  Npoints = N + 2.
     double       rhoMin = 0.0;                          // The starting position.
@@ -50,6 +57,7 @@ int main(int argc, const char * argv[]) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
+<<<<<<< HEAD
     // Implement the Jacobi Method
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,10 +176,29 @@ int main(int argc, const char * argv[]) {
 
     }
     
+=======
+    double* a = function::generateConstantVector(N-1, -1/h2);
+    double* c = function::generateConstantVector(N-1, -1/h2);
+    double* b = new double[N];
+    b[0]=2/h2;
+    for (int i = 1; i < N; i++) {
+        b[i] = 2/h2 + V(i*h);
+    }
+    function::printVector(b,N);
+    // Passing vector arguments instead of making calls to the functions
+    // that generate the vector arguments allows the following function
+    // to be vectorizable.
+    double** A = function::genTridiagMatVectArgsExact(N, a, b, c);
+    
+    //delete [] a;
+    //delete [] b;
+    delete [] c;
+>>>>>>> Ben
     
     // Code for part C
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
     if (false) {
         std::cout << "-- Begin Part C --" << std::endl;
         
@@ -180,6 +207,25 @@ int main(int argc, const char * argv[]) {
         omega[1] = 0.5;
         omega[2] = 1;
         omega[3] = 5;
+=======
+    unsigned int x;
+    unsigned int y;
+    unsigned int* p = &x;
+    unsigned int* q = &y;
+    double theta = 100;
+    unsigned int maxRecursion = 100;        // Maximum number of times for loop will run.
+    double minTheta = .000000000000000000000000000000000000000001;
+
+    for (unsigned int i = 0; ( theta*theta > minTheta); i++) {
+        function::indiciesOfMaxOffDiagnalElement(A, N, N, p, q);
+        theta = atan(
+                     (2*A[*p][*q]) / (A[*q][*q] - A[*p][*p])
+                     ) / 2.0;
+        function::jacobiRotation(A, N, *p, *q, theta);
+        std::cout<<theta<<endl;
+        //function::printMatrix(A, N, N);
+    }
+>>>>>>> Ben
 
     for (int r = 0; r < 4; r++) {
     std::cout << "-----------------\nOmega = " << omega[r] << std::endl;

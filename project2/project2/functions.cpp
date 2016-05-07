@@ -392,6 +392,7 @@ namespace function {
         return sum;
     }
     
+    // This is for a symmetric Matrix only!
     void transposeMatrix (double** A, unsigned int matrixSize) {
         double elem;
         for (unsigned int i = 0; i < matrixSize; i++) {
