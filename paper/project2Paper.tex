@@ -183,28 +183,40 @@ After many iterations, the off diagonal elements are minimized while the diagona
 	
 	\begin{table*}[t]
 		\centering
-		\begin{tabular}{ r | l || c | c | r | c | c | c | c | c | c|}
-			Size of &           & Householder & Jacobi & Iterations of & Jacobi & Householder & Jacobi & Householder & Jacobi & Householder \\
-			Matrix  & Tolerance &    Time     &  Time  & Jacobi Method  &   E1   &      E1 &   E2   &      E2 &   E3   &      E3     \\
+		\begin{tabular}{ r | l || c | c | r | c | c | c | c | c | c }
+			Size of &           & Householder & Jacobi & Iterations of & Jacobi  & Householder &  Jacobi & Householder & Jacobi & Householder \\
+			Matrix  & Tolerance &    Time     &  Time  & Jacobi Method &   E1    &      E1     &    E2   &      E2     &   E3   &      E3     \\
 			\hline
-			100 & 0.1    & 0.01 &  0.15 &  8684 & 3.00030 & 3.22937 &  6.96709 & 6.96536 & 10.91676 & 10.91526 \\
-			"  & 0.01   &  "   &  0.20 & 10667 & 2.99924 &    "    &  6.96537 & " & 10.91526 & "\\
-			"  & 0.001  &  "   &  0.21 & 12076 & 2.99923 &    "    & 6.96536 & " & 10.91526 &\\
-			"  & 0.0001 &  "   &  0.25 & 13200 &    "    &    "   &   &  &  & \\
-			200 & 0.1    & 0.1  &  2.5  & 36836 & 3.00228 & 2.99986 &   &  &  &\\
-			"  & 0.01   &  "   &  2.9  & 44012 & 2.99981 &    "    &   &  &  &\\
-			"  & 0.001  &  "   &  3.2  & 49387 &    "    &    "    &   &  &  &\\
-			"  & 0.0001 &  "   &  3.6  & 53888 &    "    &    "    &   &  &  &\\
-			300 & 0.1    & 0.38 & 12.2  & 85521 & 3.00024 & 3.00000 &   &  &  &\\
-			500 &        & 2.9  &       &       &         & 3.00003&   &  &  & \\
-			750 &        & 9.7  &       &       &         & 3.00006 &   &  &  &\\ 
-			1000 &        & 54.6 &       &       &         & 2.99967 &   &  &  &\\
+			100     & 0.1       &    0.01     &   0.15 &      8684     & 3.00030 &   3.22937   & 6.96709 & 6.96536 & 10.9168 & 10.91526 \\
+			"       & 0.01      &     "       &   0.20 &     10667     & 2.99924 &      "      & 6.96537 &    "    & 10.9153 & "\\
+			"       & 0.001     &     "       &   0.21 &     12076     & 2.99923 &      "      & 6.96536 &    "    & 10.9153 &\\
+			"       & 0.0001    &     "       &   0.25 &     13200     &    "    &      "      &         &    "    &         & \\
+			200     & 0.1       &    0.1      &   2.5  &     36836     & 3.00228 &   2.99986   &         &    "    &         & \\
+			"       & 0.01      &     "       &   2.9  &     44012     & 2.99981 &      "      &         &    "    &         & \\
+			"       & 0.001     &     "       &   3.2  &     49387     &    "    &      "      &         &    "    &         & \\
+			"       & 0.0001    &     "       &   3.6  &     53888     &    "    &      "      &         &    "    &         & \\
+			300     & 0.1       &    0.38     &  12.2  &     85521     & 3.00024 &   3.00000   &         &    "    &         & \\
+			500     &  "        &    2.9      &   114  &    246826     & 3.00047 &   3.00003   & 7.00098 &    "    & 11.0005 & \\
 			\hline
-			 & & & & Expected Value: & 3 & 3 & 7 & 7 & 11 & 11 &
+			 & & & & Expected Value: & 3 & 3 & 7 & 7 & 11 & 11
 			
 		\end{tabular}
 		\caption{rhoMax = 5.0 \label{table:relults}}
 	\end{table*}
+	
+	
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=.75\linewidth]{jacobiTimeDependence1}
+	\caption{\label{fig:jacobiTimeDependence1} A plot of the Jacobi Method's time dependence on off diagonal element tolerence.  The plot legend gives the size of the matrix.}
+\end{figure*}
+
+
+\begin{figure*}[t]
+	\centering
+	\includegraphics[width=.75\linewidth]{jacobiTimeDependence2}
+	\caption{\label{fig:jacobiTimeDependence1} A plot of the Jacobi Method's time dependence on matrix size.  The best fit seemed to be exponential.}
+\end{figure*}
 
 \section{Conclusions}
 
